@@ -1,0 +1,25 @@
+rules_version = '2';
+
+// Every document lives under users/{uid}/... and is only readable/writable
+// by the signed-in user it belongs to. Deploy with:
+//   firebase deploy --only firestore:rules
+// (after `firebase init firestore` once, to link this folder to your project)
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+
+      match /wallets/{walletId} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+
+        match /allocations/{allocationId} {
+          allow read, write: if request.auth != null && request.auth.uid == uid;
+        }
+      }
+
+      match /transactions/{transactionId} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+      }
+    }
+  }
+}

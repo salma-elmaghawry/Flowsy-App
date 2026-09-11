@@ -1,0 +1,119 @@
+{
+    "app_name": "فلوسي",
+    "common": {
+        "ok": "حسناً",
+        "cancel": "إلغاء",
+        "retry": "إعادة المحاولة",
+        "save": "حفظ",
+        "next": "التالي",
+        "skip": "تخطي",
+        "done": "تم",
+        "delete": "حذف",
+        "rename": "تعديل الاسم",
+        "currency": "ج.م",
+        "loading": "جارٍ التحميل...",
+        "no_data": "لا توجد بيانات"
+    },
+    "preferences": {
+        "language": "اللغة",
+        "theme": "المظهر",
+        "theme_light": "فاتح",
+        "theme_dark": "داكن",
+        "theme_system": "النظام"
+    },
+    "errors": {
+        "network_error": "لا يوجد اتصال بالإنترنت. يرجى التحقق من الشبكة والمحاولة مرة أخرى",
+        "server_error": "خطأ في الخادم. يرجى المحاولة لاحقاً",
+        "unexpected_error": "حدث خطأ غير متوقع",
+        "permission_denied": "ليس لديك صلاحية للقيام بهذا",
+        "not_found": "غير موجود",
+        "not_authenticated": "يرجى تسجيل الدخول مرة أخرى"
+    },
+    "auth": {
+        "errors": {
+            "invalid_credentials": "بيانات تسجيل الدخول غير صحيحة",
+            "email_in_use": "هذا البريد الإلكتروني مسجل بالفعل",
+            "rate_limit_exceeded": "طلبات كثيرة جداً. يرجى الانتظار قليلاً قبل المحاولة مرة أخرى",
+            "invalid_otp": "الرمز منتهي الصلاحية أو غير صحيح",
+            "email_not_confirmed": "البريد الإلكتروني غير مؤكد",
+            "weak_password": "كلمة المرور ضعيفة جداً، استخدم 6 أحرف على الأقل",
+            "user_not_found": "لا يوجد حساب بهذا البريد الإلكتروني"
+        },
+        "login": {
+            "title": "أهلاً بعودتك",
+            "submit": "تسجيل الدخول",
+            "create_account": "ليس لديك حساب؟ أنشئ واحداً",
+            "email_label": "البريد الإلكتروني",
+            "email_hint": "أدخل بريدك الإلكتروني",
+            "email_required": "البريد الإلكتروني مطلوب",
+            "email_invalid": "أدخل بريداً إلكترونياً صحيحاً",
+            "password_label": "كلمة المرور",
+            "password_hint": "أدخل كلمة المرور",
+            "password_required": "كلمة المرور مطلوبة",
+            "password_length": "يجب أن تكون كلمة المرور 6 أحرف على الأقل"
+        },
+        "signup": {
+            "title": "إنشاء حساب",
+            "submit": "إنشاء الحساب",
+            "have_account": "لديك حساب بالفعل؟ سجل الدخول",
+            "confirm_password_label": "تأكيد كلمة المرور",
+            "confirm_password_hint": "أعد إدخال كلمة المرور",
+            "name_required": "الاسم مطلوب",
+            "password_mismatch": "كلمتا المرور غير متطابقتين"
+        }
+    },
+    "home": {
+        "total_balance_label": "إجمالي الرصيد",
+        "wallets_section": "المحافظ",
+        "recent_activity_section": "آخر الحركات"
+    },
+    "wallets": {
+        "balance_label": "الرصيد",
+        "allocated_label": "المخصص",
+        "remaining_label": "غير مخصص",
+        "add_wallet_title": "إضافة محفظة",
+        "edit_wallet_title": "تعديل اسم المحفظة",
+        "name_label": "اسم المحفظة",
+        "name_hint": "مثل: فودافون كاش",
+        "name_required": "اسم المحفظة مطلوب",
+        "color_label": "اللون",
+        "empty": "لا توجد محافظ بعد. أضف أول محفظة زي انستاباي أو فودافون كاش.",
+        "delete_confirm_title": "حذف هذه المحفظة؟",
+        "delete_confirm_message": "هيتم حذف المحفظة وبنودها. سجل الحركات هيفضل محفوظ.",
+        "errors": {
+            "insufficient_funds": "الرصيد غير كافٍ لهذه العملية"
+        }
+    },
+    "allocations": {
+        "section_title": "البنود",
+        "add_title": "إضافة بند",
+        "edit_title": "تعديل البند",
+        "label_label": "اسم البند",
+        "label_hint": "مثل: إنترنت، رحلة القاهرة",
+        "label_required": "اسم البند مطلوب",
+        "amount_label": "المبلغ",
+        "amount_hint": "٠٫٠٠",
+        "amount_invalid": "أدخل مبلغاً صحيحاً",
+        "note_label": "ملاحظة (اختياري)",
+        "note_hint": "أضف ملاحظة قصيرة",
+        "empty": "لا توجد بنود بعد. قسّم رصيد المحفظة إلى بنود بأسماء واضحة.",
+        "delete_confirm_title": "حذف هذا البند؟"
+    },
+    "transactions": {
+        "type_top_up": "إيداع",
+        "type_spend": "صرف",
+        "top_up_title": "إيداع",
+        "spend_title": "صرف",
+        "amount_label": "المبلغ",
+        "amount_hint": "٠٫٠٠",
+        "allocation_label": "من بند (اختياري)",
+        "no_allocation": "بدون بند محدد",
+        "history_section": "السجل",
+        "empty": "لا توجد حركات بعد."
+    },
+    "settings": {
+        "title": "الإعدادات",
+        "sign_out": "تسجيل الخروج",
+        "sign_out_confirm_title": "تسجيل الخروج من فلوسي؟"
+    }
+}

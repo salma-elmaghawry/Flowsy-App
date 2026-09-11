@@ -1,0 +1,119 @@
+{
+    "app_name": "Flowsy",
+    "common": {
+        "ok": "OK",
+        "cancel": "Cancel",
+        "retry": "Retry",
+        "save": "Save",
+        "next": "Next",
+        "skip": "Skip",
+        "done": "Done",
+        "delete": "Delete",
+        "rename": "Rename",
+        "currency": "EGP",
+        "loading": "Loading...",
+        "no_data": "No data available"
+    },
+    "preferences": {
+        "language": "Language",
+        "theme": "Theme",
+        "theme_light": "Light",
+        "theme_dark": "Dark",
+        "theme_system": "System"
+    },
+    "errors": {
+        "network_error": "No internet connection. Please check your network and try again",
+        "server_error": "Server error. Please try again later",
+        "unexpected_error": "An unexpected error occurred",
+        "permission_denied": "You don't have permission to do that",
+        "not_found": "Not found",
+        "not_authenticated": "Please sign in again"
+    },
+    "auth": {
+        "errors": {
+            "invalid_credentials": "Invalid login credentials",
+            "email_in_use": "This email is already registered",
+            "rate_limit_exceeded": "Too many requests. Please wait a while before trying again",
+            "invalid_otp": "Code has expired or is invalid",
+            "email_not_confirmed": "Email not confirmed",
+            "weak_password": "Password is too weak. Use at least 6 characters",
+            "user_not_found": "No account found with this email"
+        },
+        "login": {
+            "title": "Welcome back",
+            "submit": "Sign in",
+            "create_account": "Don't have an account? Sign up",
+            "email_label": "Email",
+            "email_hint": "Enter your email",
+            "email_required": "Email is required",
+            "email_invalid": "Enter a valid email",
+            "password_label": "Password",
+            "password_hint": "Enter your password",
+            "password_required": "Password is required",
+            "password_length": "Password must be at least 6 characters"
+        },
+        "signup": {
+            "title": "Create account",
+            "submit": "Sign up",
+            "have_account": "Already have an account? Sign in",
+            "confirm_password_label": "Confirm password",
+            "confirm_password_hint": "Re-enter your password",
+            "name_required": "Name is required",
+            "password_mismatch": "Passwords do not match"
+        }
+    },
+    "home": {
+        "total_balance_label": "Total balance",
+        "wallets_section": "Wallets",
+        "recent_activity_section": "Recent activity"
+    },
+    "wallets": {
+        "balance_label": "Balance",
+        "allocated_label": "Allocated",
+        "remaining_label": "Unallocated",
+        "add_wallet_title": "Add wallet",
+        "edit_wallet_title": "Rename wallet",
+        "name_label": "Wallet name",
+        "name_hint": "e.g. Vodafone Cash",
+        "name_required": "Wallet name is required",
+        "color_label": "Color",
+        "empty": "No wallets yet. Add your first one, like InstaPay or Vodafone Cash.",
+        "delete_confirm_title": "Delete this wallet?",
+        "delete_confirm_message": "This removes the wallet and its allocations. Its transaction history stays on record.",
+        "errors": {
+            "insufficient_funds": "Not enough funds for this"
+        }
+    },
+    "allocations": {
+        "section_title": "Allocations",
+        "add_title": "Add allocation",
+        "edit_title": "Edit allocation",
+        "label_label": "Label",
+        "label_hint": "e.g. Internet, Cairo trip",
+        "label_required": "Label is required",
+        "amount_label": "Amount",
+        "amount_hint": "0.00",
+        "amount_invalid": "Enter a valid amount",
+        "note_label": "Note (optional)",
+        "note_hint": "Add a short note",
+        "empty": "No allocations yet. Split this wallet's balance into labeled envelopes.",
+        "delete_confirm_title": "Delete this allocation?"
+    },
+    "transactions": {
+        "type_top_up": "Top up",
+        "type_spend": "Spend",
+        "top_up_title": "Top up",
+        "spend_title": "Spend",
+        "amount_label": "Amount",
+        "amount_hint": "0.00",
+        "allocation_label": "From allocation (optional)",
+        "no_allocation": "No specific allocation",
+        "history_section": "History",
+        "empty": "No transactions yet."
+    },
+    "settings": {
+        "title": "Settings",
+        "sign_out": "Sign out",
+        "sign_out_confirm_title": "Sign out of Flowsy?"
+    }
+}
