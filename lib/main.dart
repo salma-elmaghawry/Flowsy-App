@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallet_split/app.dart';
 import 'package:wallet_split/core/injection/injection_container.dart';
 import 'package:wallet_split/core/theme/controller/theme_cubit.dart';
+import 'package:wallet_split/features/app_lock/presentation/cubit/app_lock_cubit.dart';
 import 'package:wallet_split/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:wallet_split/firebase_options.dart';
 
@@ -29,6 +30,9 @@ void main() async {
           BlocProvider<ThemeCubit>(create: (context) => getIt<ThemeCubit>()),
           BlocProvider<AuthCubit>(
             create: (context) => getIt<AuthCubit>()..checkAuthStatus(),
+          ),
+          BlocProvider<AppLockCubit>(
+            create: (context) => getIt<AppLockCubit>()..init(),
           ),
         ],
         child: const FlowsyApp(),

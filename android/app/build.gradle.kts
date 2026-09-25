@@ -1,5 +1,8 @@
 plugins {
     id("com.android.application")
+    // START: FlutterFire Configuration
+    id("com.google.gms.google-services")
+    // END: FlutterFire Configuration
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
@@ -42,4 +45,9 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // AppCompat themes are required by local_auth's fingerprint / PIN prompt.
+    implementation("androidx.appcompat:appcompat:1.7.1")
 }

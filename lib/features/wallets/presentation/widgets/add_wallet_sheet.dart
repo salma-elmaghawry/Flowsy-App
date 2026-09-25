@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,6 +47,7 @@ class _AddWalletSheetContent extends StatefulWidget {
 
 class _AddWalletSheetContentState extends State<_AddWalletSheetContent> {
   final _formKey = GlobalKey<FormState>();
+  bool _closed = false;
   late final _nameController = TextEditingController(
     text: widget.existing?.name,
   );
@@ -78,6 +80,87 @@ class _AddWalletSheetContentState extends State<_AddWalletSheetContent> {
     }
   }
 
+  bool get _isCustomColor => !_walletColors.any(
+    (color) => color.toARGB32() == _selectedColor.toARGB32(),
+  );
+
+  Future<void> _pickCustomColor() async {
+    final picked = await showColorPickerDialog(
+      context,
+      _selectedColor,
+      title: Text(
+        'wallets.custom_color_title'.tr(),
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
+      pickersEnabled: const {
+        ColorPickerType.primary: true,
+        ColorPickerType.accent: false,
+        ColorPickerType.wheel: true,
+      },
+      pickerTypeLabels: {
+        ColorPickerType.primary: 'wallets.custom_color_palette'.tr(),
+        ColorPickerType.wheel: 'wallets.custom_color_wheel'.tr(),
+      },
+      enableShadesSelection: true,
+      width: 36,
+      height: 36,
+      spacing: 6,
+      runSpacing: 6,
+      borderRadius: 18,
+      wheelDiameter: 220,
+      showColorCode: true,
+      constraints: const BoxConstraints(minWidth: 320, maxWidth: 360),
+    );
+    if (!mounted) return;
+    // The dialog returns the starting color when cancelled.
+    setState(() => _selectedColor = picked.withAlpha(0xFF));
+  }
+
+  /// A rainbow circle that opens the full color picker. Once a custom color
+  /// is chosen, the circle shows that color with a check mark.
+  Widget _buildCustomColorButton(BuildContext context) {
+    final isSelected = _isCustomColor;
+    return Tooltip(
+      message: 'wallets.custom_color_title'.tr(),
+      child: AnimatedTap(
+        onTap: _pickCustomColor,
+        child: Container(
+          width: 36.w,
+          height: 36.w,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isSelected ? _selectedColor : null,
+            gradient: isSelected
+                ? null
+                : const SweepGradient(
+                    colors: [
+                      Colors.red,
+                      Colors.orange,
+                      Colors.yellow,
+                      Colors.green,
+                      Colors.cyan,
+                      Colors.blue,
+                      Colors.purple,
+                      Colors.red,
+                    ],
+                  ),
+            border: isSelected
+                ? Border.all(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    width: 2,
+                  )
+                : null,
+          ),
+          child: Icon(
+            isSelected ? Icons.check : Icons.colorize_rounded,
+            color: Colors.white,
+            size: 18,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<WalletsCubit, WalletsState>(
@@ -87,6 +170,11 @@ class _AddWalletSheetContentState extends State<_AddWalletSheetContent> {
             : state.action == WalletsAction.createWallet;
         if (!matchesAction) return;
         if (state.isSuccess) {
+          // Several success states can arrive for one save (the save result
+          // plus live stream updates). Close the sheet only once, otherwise
+          // the extra pops close the screens underneath it.
+          if (_closed) return;
+          _closed = true;
           Navigator.of(context).pop();
         } else if (state.isFailure) {
           ScaffoldMessenger.of(
@@ -134,7 +222,7 @@ class _AddWalletSheetContentState extends State<_AddWalletSheetContent> {
               Wrap(
                 spacing: 12.w,
                 runSpacing: 12.h,
-                children: _walletColors.map((color) {
+                children: _walletColors.map<Widget>((color) {
                   final isSelected = color.toARGB32() == _selectedColor.toARGB32();
                   return AnimatedTap(
                     onTap: () => setState(() => _selectedColor = color),
@@ -156,7 +244,8 @@ class _AddWalletSheetContentState extends State<_AddWalletSheetContent> {
                           : null,
                     ),
                   );
-                }).toList(),
+                }).toList()
+                  ..add(_buildCustomColorButton(context)),
               ),
               verticalSpace(24),
               BlocBuilder<WalletsCubit, WalletsState>(

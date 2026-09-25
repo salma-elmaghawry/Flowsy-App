@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wallet_split/core/animations/animations.dart';
+import 'package:wallet_split/core/helpers/amount_parser.dart';
 import 'package:wallet_split/core/helpers/spacing.dart';
 import 'package:wallet_split/core/utils/app_text_styles.dart';
 import 'package:wallet_split/features/wallets/domain/entities/allocation.dart';
@@ -40,14 +41,13 @@ class _AddAllocationSheetContent extends StatefulWidget {
 class _AddAllocationSheetContentState
     extends State<_AddAllocationSheetContent> {
   final _formKey = GlobalKey<FormState>();
+  bool _closed = false;
+  String? _error;
   late final _labelController = TextEditingController(
     text: widget.existing?.label,
   );
   late final _amountController = TextEditingController(
     text: widget.existing != null ? widget.existing!.amount.toString() : '',
-  );
-  late final _noteController = TextEditingController(
-    text: widget.existing?.note,
   );
 
   bool get _isEditing => widget.existing != null;
@@ -56,30 +56,25 @@ class _AddAllocationSheetContentState
   void dispose() {
     _labelController.dispose();
     _amountController.dispose();
-    _noteController.dispose();
     super.dispose();
   }
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
-    final amount = double.parse(_amountController.text.trim());
+    final amount = parseAmount(_amountController.text)!;
+    setState(() => _error = null);
     final cubit = context.read<WalletDetailCubit>();
     if (_isEditing) {
       cubit.updateAllocation(
         allocationId: widget.existing!.id,
         label: _labelController.text.trim(),
         amount: amount,
-        note: _noteController.text.trim().isEmpty
-            ? null
-            : _noteController.text.trim(),
+        note: widget.existing!.note,
       );
     } else {
       cubit.createAllocation(
         label: _labelController.text.trim(),
         amount: amount,
-        note: _noteController.text.trim().isEmpty
-            ? null
-            : _noteController.text.trim(),
       );
     }
   }
@@ -93,11 +88,16 @@ class _AddAllocationSheetContentState
             : state.action == WalletDetailAction.createAllocation;
         if (!matchesAction) return;
         if (state.isSuccess) {
+          // Several success states can arrive for one save (the save result
+          // plus live stream updates). Close the sheet only once, otherwise
+          // the extra pops close the screens underneath it.
+          if (_closed) return;
+          _closed = true;
           Navigator.of(context).pop();
         } else if (state.isFailure) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message ?? '')));
+          setState(
+            () => _error = state.message ?? 'errors.unexpected_error'.tr(),
+          );
         }
       },
       child: Padding(
@@ -143,22 +143,20 @@ class _AddAllocationSheetContentState
                   hintText: 'allocations.amount_hint'.tr(),
                 ),
                 validator: (value) {
-                  final parsed = double.tryParse(value?.trim() ?? '');
+                  final parsed = parseAmount(value);
                   if (parsed == null || parsed <= 0) {
                     return 'allocations.amount_invalid'.tr();
                   }
                   return null;
                 },
               ),
-              verticalSpace(16),
-              TextFormField(
-                controller: _noteController,
-                textAlign: TextAlign.start,
-                decoration: InputDecoration(
-                  labelText: 'allocations.note_label'.tr(),
-                  hintText: 'allocations.note_hint'.tr(),
+              if (_error != null) ...[
+                verticalSpace(16),
+                Text(
+                  _error!,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
                 ),
-              ),
+              ],
               verticalSpace(24),
               BlocBuilder<WalletDetailCubit, WalletDetailState>(
                 builder: (context, state) {

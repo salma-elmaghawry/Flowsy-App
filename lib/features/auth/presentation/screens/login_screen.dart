@@ -10,6 +10,7 @@ import 'package:wallet_split/core/routes/routes.dart';
 import 'package:wallet_split/core/utils/app_text_styles.dart';
 import 'package:wallet_split/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:wallet_split/features/auth/presentation/cubit/auth_state.dart';
+import 'package:wallet_split/features/auth/presentation/widgets/forgot_password_sheet.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -101,7 +102,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       validator: AppValidators.validatePassword,
                     ).fadeInSlideUp(delay: const Duration(milliseconds: 150)),
-                    verticalSpace(28),
+                    Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: TextButton(
+                        onPressed: () => showForgotPasswordSheet(
+                          context,
+                          initialEmail: _emailController.text.trim(),
+                        ),
+                        child: Text(
+                          'auth.login.forgot_password'.tr(),
+                          style: AppTextStyles.font14SemiBold.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    verticalSpace(12),
                     AnimatedButton(
                       isLoading: isLoading,
                       onPressed: _submit,

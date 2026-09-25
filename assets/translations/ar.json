@@ -50,7 +50,8 @@
             "password_label": "كلمة المرور",
             "password_hint": "أدخل كلمة المرور",
             "password_required": "كلمة المرور مطلوبة",
-            "password_length": "يجب أن تكون كلمة المرور 6 أحرف على الأقل"
+            "password_length": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+            "forgot_password": "نسيت كلمة المرور؟"
         },
         "signup": {
             "title": "إنشاء حساب",
@@ -60,6 +61,13 @@
             "confirm_password_hint": "أعد إدخال كلمة المرور",
             "name_required": "الاسم مطلوب",
             "password_mismatch": "كلمتا المرور غير متطابقتين"
+        },
+        "forgot": {
+            "title": "استرجاع كلمة المرور",
+            "message": "اكتب إيميل حسابك وهنبعتلك لينك تعمل بيه كلمة مرور جديدة.",
+            "submit": "ابعت اللينك",
+            "sent_title": "شوف إيميلك",
+            "sent_message": "لو فيه حساب بالإيميل {email}، اللينك في الطريق. بص كمان في الـ Spam."
         }
     },
     "home": {
@@ -68,9 +76,9 @@
         "recent_activity_section": "آخر الحركات"
     },
     "wallets": {
-        "balance_label": "الرصيد",
-        "allocated_label": "المخصص",
-        "remaining_label": "غير مخصص",
+        "balance_label": "في الحساب",
+        "allocated_label": "هصرف",
+        "remaining_label": "فاضل معايا",
         "add_wallet_title": "إضافة محفظة",
         "edit_wallet_title": "تعديل اسم المحفظة",
         "name_label": "اسم المحفظة",
@@ -81,39 +89,54 @@
         "delete_confirm_title": "حذف هذه المحفظة؟",
         "delete_confirm_message": "هيتم حذف المحفظة وبنودها. سجل الحركات هيفضل محفوظ.",
         "errors": {
-            "insufficient_funds": "الرصيد غير كافٍ لهذه العملية"
-        }
+            "insufficient_funds": "الفلوس مش كفاية"
+        },
+        "custom_color_title": "اختار لون",
+        "custom_color_palette": "ألوان",
+        "custom_color_wheel": "عجلة الألوان"
     },
     "allocations": {
-        "section_title": "البنود",
-        "add_title": "إضافة بند",
-        "edit_title": "تعديل البند",
-        "label_label": "اسم البند",
-        "label_hint": "مثل: إنترنت، رحلة القاهرة",
-        "label_required": "اسم البند مطلوب",
-        "amount_label": "المبلغ",
+        "section_title": "هصرف على",
+        "add_title": "هتصرف على إيه؟",
+        "edit_title": "تعديل المصروف",
+        "label_label": "على إيه؟",
+        "label_hint": "مثلاً: النت والباقات",
+        "label_required": "اكتب هتصرف على إيه",
+        "amount_label": "كام؟",
         "amount_hint": "٠٫٠٠",
         "amount_invalid": "أدخل مبلغاً صحيحاً",
         "note_label": "ملاحظة (اختياري)",
         "note_hint": "أضف ملاحظة قصيرة",
-        "empty": "لا توجد بنود بعد. قسّم رصيد المحفظة إلى بنود بأسماء واضحة.",
-        "delete_confirm_title": "حذف هذا البند؟"
+        "empty": "لسه مفيش حاجة. دوس + وضيف هتصرف على إيه.",
+        "delete_confirm_title": "تشيل المصروف ده؟"
     },
     "transactions": {
-        "type_top_up": "إيداع",
-        "type_spend": "صرف",
-        "top_up_title": "إيداع",
-        "spend_title": "صرف",
-        "amount_label": "المبلغ",
+        "type_top_up": "ضفت فلوس",
+        "type_spend": "دفعت",
+        "top_up_title": "ضيف فلوس",
+        "spend_title": "دفعت",
+        "amount_label": "كام؟",
         "amount_hint": "٠٫٠٠",
-        "allocation_label": "من بند (اختياري)",
-        "no_allocation": "بدون بند محدد",
-        "history_section": "السجل",
-        "empty": "لا توجد حركات بعد."
+        "allocation_label": "دفعت في (اختياري)",
+        "no_allocation": "حاجة تانية",
+        "history_section": "اللي حصل",
+        "empty": "لسه مفيش حاجة."
     },
     "settings": {
         "title": "الإعدادات",
         "sign_out": "تسجيل الخروج",
         "sign_out_confirm_title": "تسجيل الخروج من فلوسي؟"
+    },
+    "app_lock": {
+        "section_title": "الأمان",
+        "toggle_title": "قفل بالبصمة أو الرقم السري",
+        "toggle_subtitle": "اطلب البصمة أو الوش أو الرقم السري بتاع الموبايل لما تفتح Flowsy",
+        "not_supported": "فعّل البصمة أو قفل الشاشة على موبايلك الأول",
+        "reason": "افتح Flowsy",
+        "enable_reason": "أكّد عشان تشغّل قفل الأبلكيشن",
+        "enable_failed": "قفل الأبلكيشن ما اتشغلش",
+        "locked_title": "Flowsy مقفول",
+        "locked_message": "استخدم البصمة أو الوش أو الرقم السري بتاع الموبايل عشان تكمل.",
+        "unlock": "افتح"
     }
 }

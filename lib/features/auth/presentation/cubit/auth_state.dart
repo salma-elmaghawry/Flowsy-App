@@ -1,7 +1,7 @@
 import 'package:wallet_split/core/bloc/base_bloc.dart';
 import 'package:wallet_split/features/auth/domain/entities/app_user.dart';
 
-enum AuthAction { checkStatus, signIn, signUp, signOut }
+enum AuthAction { checkStatus, signIn, signUp, signOut, resetPassword }
 
 class AuthState extends BaseState {
   final AppUser? user;

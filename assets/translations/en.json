@@ -50,7 +50,8 @@
             "password_label": "Password",
             "password_hint": "Enter your password",
             "password_required": "Password is required",
-            "password_length": "Password must be at least 6 characters"
+            "password_length": "Password must be at least 6 characters",
+            "forgot_password": "Forgot password?"
         },
         "signup": {
             "title": "Create account",
@@ -60,6 +61,13 @@
             "confirm_password_hint": "Re-enter your password",
             "name_required": "Name is required",
             "password_mismatch": "Passwords do not match"
+        },
+        "forgot": {
+            "title": "Reset your password",
+            "message": "Enter your account email and we'll send you a link to set a new password.",
+            "submit": "Send reset link",
+            "sent_title": "Check your email",
+            "sent_message": "If an account exists for {email}, a reset link is on its way. Check your spam folder too."
         }
     },
     "home": {
@@ -68,9 +76,9 @@
         "recent_activity_section": "Recent activity"
     },
     "wallets": {
-        "balance_label": "Balance",
-        "allocated_label": "Allocated",
-        "remaining_label": "Unallocated",
+        "balance_label": "In account",
+        "allocated_label": "I will spend",
+        "remaining_label": "So I have",
         "add_wallet_title": "Add wallet",
         "edit_wallet_title": "Rename wallet",
         "name_label": "Wallet name",
@@ -81,39 +89,54 @@
         "delete_confirm_title": "Delete this wallet?",
         "delete_confirm_message": "This removes the wallet and its allocations. Its transaction history stays on record.",
         "errors": {
-            "insufficient_funds": "Not enough funds for this"
-        }
+            "insufficient_funds": "Not enough money for this"
+        },
+        "custom_color_title": "Pick a color",
+        "custom_color_palette": "Palette",
+        "custom_color_wheel": "Wheel"
     },
     "allocations": {
-        "section_title": "Allocations",
-        "add_title": "Add allocation",
-        "edit_title": "Edit allocation",
-        "label_label": "Label",
-        "label_hint": "e.g. Internet, Cairo trip",
-        "label_required": "Label is required",
-        "amount_label": "Amount",
+        "section_title": "I will spend on",
+        "add_title": "What will you spend on?",
+        "edit_title": "Edit planned spending",
+        "label_label": "For what?",
+        "label_hint": "e.g. Internet and bakas",
+        "label_required": "Write what it is for",
+        "amount_label": "How much?",
         "amount_hint": "0.00",
         "amount_invalid": "Enter a valid amount",
         "note_label": "Note (optional)",
         "note_hint": "Add a short note",
-        "empty": "No allocations yet. Split this wallet's balance into labeled envelopes.",
-        "delete_confirm_title": "Delete this allocation?"
+        "empty": "Nothing planned yet. Tap + to add what you will spend.",
+        "delete_confirm_title": "Remove this planned spending?"
     },
     "transactions": {
-        "type_top_up": "Top up",
-        "type_spend": "Spend",
-        "top_up_title": "Top up",
-        "spend_title": "Spend",
-        "amount_label": "Amount",
+        "type_top_up": "Added money",
+        "type_spend": "Paid",
+        "top_up_title": "Add money",
+        "spend_title": "I paid",
+        "amount_label": "How much?",
         "amount_hint": "0.00",
-        "allocation_label": "From allocation (optional)",
-        "no_allocation": "No specific allocation",
-        "history_section": "History",
-        "empty": "No transactions yet."
+        "allocation_label": "Paid for (optional)",
+        "no_allocation": "Something else",
+        "history_section": "What happened",
+        "empty": "Nothing yet."
     },
     "settings": {
         "title": "Settings",
         "sign_out": "Sign out",
         "sign_out_confirm_title": "Sign out of Flowsy?"
+    },
+    "app_lock": {
+        "section_title": "Security",
+        "toggle_title": "Lock with fingerprint or PIN",
+        "toggle_subtitle": "Ask for your fingerprint, face or phone PIN when opening Flowsy",
+        "not_supported": "Set up a fingerprint or screen lock on your phone first",
+        "reason": "Unlock Flowsy",
+        "enable_reason": "Confirm to turn on the app lock",
+        "enable_failed": "The app lock wasn't turned on",
+        "locked_title": "Flowsy is locked",
+        "locked_message": "Use your fingerprint, face or phone PIN to continue.",
+        "unlock": "Unlock"
     }
 }

@@ -9,6 +9,8 @@ import 'package:wallet_split/core/routes/routes.dart';
 import 'package:wallet_split/core/theme/controller/theme_cubit.dart';
 import 'package:wallet_split/core/theme/controller/theme_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wallet_split/features/app_lock/presentation/cubit/app_lock_cubit.dart';
+import 'package:wallet_split/features/app_lock/presentation/cubit/app_lock_state.dart';
 import 'package:wallet_split/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:wallet_split/features/auth/presentation/cubit/auth_state.dart';
 
@@ -21,6 +23,19 @@ class SettingsScreen extends StatelessWidget {
       'app_locale',
       locale.languageCode,
     );
+  }
+
+  Future<void> _toggleAppLock(BuildContext context, bool value) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final ok = await context.read<AppLockCubit>().setEnabled(
+      value,
+      'app_lock.enable_reason'.tr(),
+    );
+    if (!ok) {
+      messenger.showSnackBar(
+        SnackBar(content: Text('app_lock.enable_failed'.tr())),
+      );
+    }
   }
 
   Future<void> _confirmSignOut(BuildContext context) async {
@@ -120,6 +135,33 @@ class SettingsScreen extends StatelessWidget {
                           .setThemeMode(ThemeMode.system),
                     ),
                   ],
+                );
+              },
+            ),
+            verticalSpace(24),
+            Text(
+              'app_lock.section_title'.tr(),
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+            verticalSpace(4),
+            BlocBuilder<AppLockCubit, AppLockState>(
+              builder: (context, state) {
+                return SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  secondary: Icon(
+                    Icons.fingerprint_rounded,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  title: Text('app_lock.toggle_title'.tr()),
+                  subtitle: Text(
+                    state.supported
+                        ? 'app_lock.toggle_subtitle'.tr()
+                        : 'app_lock.not_supported'.tr(),
+                  ),
+                  value: state.enabled,
+                  onChanged: (!state.supported || state.authenticating)
+                      ? null
+                      : (value) => _toggleAppLock(context, value),
                 );
               },
             ),

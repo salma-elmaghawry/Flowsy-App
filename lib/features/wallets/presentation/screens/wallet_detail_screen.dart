@@ -294,6 +294,7 @@ class _BalanceSummaryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isOverAllocated = remaining < 0;
+    final theme = Theme.of(context);
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(20.w),
@@ -303,33 +304,34 @@ class _BalanceSummaryCard extends StatelessWidget {
         border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'wallets.balance_label'.tr(),
-            style: Theme.of(context).textTheme.bodySmall,
+          _SummaryRow(
+            label: 'wallets.balance_label'.tr(),
+            value: formatCurrency(balance),
           ),
-          verticalSpace(4),
-          Text(
-            formatCurrency(balance),
-            style: Theme.of(
-              context,
-            ).textTheme.displayMedium?.copyWith(color: color),
+          verticalSpace(10),
+          _SummaryRow(
+            label: 'wallets.allocated_label'.tr(),
+            value: '- ${formatCurrency(allocated)}',
           ),
-          verticalSpace(16),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 12.h),
+            child: Divider(height: 1, color: color.withValues(alpha: 0.3)),
+          ),
           Row(
             children: [
               Expanded(
-                child: _StatColumn(
-                  label: 'wallets.allocated_label'.tr(),
-                  value: formatCurrency(allocated),
+                child: Text(
+                  'wallets.remaining_label'.tr(),
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
-              Expanded(
-                child: _StatColumn(
-                  label: 'wallets.remaining_label'.tr(),
-                  value: formatCurrency(remaining),
-                  valueColor: isOverAllocated ? AppColors.error : null,
+              Text(
+                formatCurrency(remaining),
+                style: theme.textTheme.displayMedium?.copyWith(
+                  color: isOverAllocated ? AppColors.error : color,
                 ),
               ),
             ],
@@ -340,25 +342,22 @@ class _BalanceSummaryCard extends StatelessWidget {
   }
 }
 
-class _StatColumn extends StatelessWidget {
+class _SummaryRow extends StatelessWidget {
   final String label;
   final String value;
-  final Color? valueColor;
 
-  const _StatColumn({required this.label, required this.value, this.valueColor});
+  const _SummaryRow({required this.label, required this.value});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    final theme = Theme.of(context);
+    return Row(
       children: [
-        Text(label, style: Theme.of(context).textTheme.labelMedium),
-        verticalSpace(2),
+        Expanded(child: Text(label, style: theme.textTheme.bodyMedium)),
         Text(
           value,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          style: theme.textTheme.bodyLarge?.copyWith(
             fontWeight: FontWeight.w600,
-            color: valueColor,
           ),
         ),
       ],

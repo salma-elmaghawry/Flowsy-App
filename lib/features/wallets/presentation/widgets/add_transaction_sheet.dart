@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wallet_split/core/animations/animations.dart';
+import 'package:wallet_split/core/helpers/amount_parser.dart';
 import 'package:wallet_split/core/helpers/spacing.dart';
 import 'package:wallet_split/core/utils/app_text_styles.dart';
 import 'package:wallet_split/features/wallets/domain/entities/money_transaction.dart';
@@ -40,6 +41,8 @@ class _AddTransactionSheetContent extends StatefulWidget {
 class _AddTransactionSheetContentState
     extends State<_AddTransactionSheetContent> {
   final _formKey = GlobalKey<FormState>();
+  bool _closed = false;
+  String? _error;
   final _amountController = TextEditingController();
   final _noteController = TextEditingController();
   String? _selectedAllocationId;
@@ -57,7 +60,8 @@ class _AddTransactionSheetContentState
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
-    final amount = double.parse(_amountController.text.trim());
+    final amount = parseAmount(_amountController.text)!;
+    setState(() => _error = null);
     final note = _noteController.text.trim().isEmpty
         ? null
         : _noteController.text.trim();
@@ -79,11 +83,16 @@ class _AddTransactionSheetContentState
       listener: (context, state) {
         if (state.action != _action) return;
         if (state.isSuccess) {
+          // Several success states can arrive for one save (the save result
+          // plus live stream updates). Close the sheet only once, otherwise
+          // the extra pops close the screens underneath it.
+          if (_closed) return;
+          _closed = true;
           Navigator.of(context).pop();
         } else if (state.isFailure) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message ?? '')));
+          setState(
+            () => _error = state.message ?? 'errors.unexpected_error'.tr(),
+          );
         }
       },
       child: Padding(
@@ -117,7 +126,7 @@ class _AddTransactionSheetContentState
                   hintText: 'transactions.amount_hint'.tr(),
                 ),
                 validator: (value) {
-                  final parsed = double.tryParse(value?.trim() ?? '');
+                  final parsed = parseAmount(value);
                   if (parsed == null || parsed <= 0) {
                     return 'allocations.amount_invalid'.tr();
                   }
@@ -163,6 +172,13 @@ class _AddTransactionSheetContentState
                   hintText: 'allocations.note_hint'.tr(),
                 ),
               ),
+              if (_error != null) ...[
+                verticalSpace(16),
+                Text(
+                  _error!,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
+              ],
               verticalSpace(24),
               BlocBuilder<WalletDetailCubit, WalletDetailState>(
                 builder: (context, state) {

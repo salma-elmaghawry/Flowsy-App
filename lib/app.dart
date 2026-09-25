@@ -8,6 +8,7 @@ import 'package:wallet_split/core/routes/routes.dart';
 import 'package:wallet_split/core/theme/app_theme.dart';
 import 'package:wallet_split/core/theme/controller/theme_cubit.dart';
 import 'package:wallet_split/core/theme/controller/theme_state.dart';
+import 'package:wallet_split/features/app_lock/presentation/widgets/app_lock_gate.dart';
 
 class FlowsyApp extends StatelessWidget {
   const FlowsyApp({super.key});
@@ -34,6 +35,8 @@ class FlowsyApp extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 onGenerateRoute: AppRouter().generateRoute,
                 initialRoute: Routes.splash,
+                builder: (context, child) =>
+                    AppLockGate(child: child ?? const SizedBox.shrink()),
               ),
             );
           },

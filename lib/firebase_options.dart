@@ -48,17 +48,18 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'REPLACE_ME',
-    appId: 'REPLACE_ME',
-    messagingSenderId: 'REPLACE_ME',
-    projectId: 'REPLACE_ME',
+    apiKey: 'AIzaSyBxo300NPG1evFtNGda_rCrvSFwOVvhdtI',
+    appId: '1:255359184841:android:c184bd8d28922fb3d1c218',
+    messagingSenderId: '255359184841',
+    projectId: 'push-notification-1cf6d',
+    storageBucket: 'push-notification-1cf6d.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'REPLACE_ME',
-    appId: 'REPLACE_ME',
-    messagingSenderId: 'REPLACE_ME',
-    projectId: 'REPLACE_ME',
+    apiKey: 'AIzaSyDB4NT_AP_GeDqbAxs0coa5y9aw37-i4qA',
+    appId: '1:255359184841:ios:ed94638c419f25c1d1c218',
+    messagingSenderId: '255359184841',
+    projectId: 'push-notification-1cf6d',
+    storageBucket: 'push-notification-1cf6d.firebasestorage.app',
     iosBundleId: 'com.example.walletSplit',
   );
 }
