@@ -1,6 +1,6 @@
 {
-    "name": "wallet_split",
-    "short_name": "wallet_split",
+    "name": "Flowsy",
+    "short_name": "Flowsy",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -17,6 +17,7 @@ import 'package:wallet_split/features/wallets/presentation/widgets/add_allocatio
 import 'package:wallet_split/features/wallets/presentation/widgets/add_transaction_sheet.dart';
 import 'package:wallet_split/features/wallets/presentation/widgets/allocation_tile.dart';
 import 'package:wallet_split/features/wallets/presentation/widgets/transaction_tile.dart';
+import 'package:wallet_split/features/wallets/presentation/widgets/wallet_color_picker.dart';
 
 class WalletDetailScreen extends StatefulWidget {
   final Wallet wallet;
@@ -34,34 +35,61 @@ class _WalletDetailScreenState extends State<WalletDetailScreen> {
     context.read<WalletDetailCubit>().watchAll();
   }
 
-  Future<void> _renameWallet(String currentName, int colorValue) async {
-    final controller = TextEditingController(text: currentName);
-    final newName = await showDialog<String>(
+  Future<void> _editWallet(Wallet wallet) async {
+    final controller = TextEditingController(text: wallet.name);
+    var selectedColor = Color(wallet.colorValue);
+    final result = await showDialog<({String name, Color color})>(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text('wallets.edit_wallet_title'.tr()),
-        content: TextField(
-          controller: controller,
-          textAlign: TextAlign.start,
-          decoration: InputDecoration(labelText: 'wallets.name_label'.tr()),
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (dialogContext, setDialogState) => AlertDialog(
+          title: Text('wallets.edit_wallet_title'.tr()),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: controller,
+                  textAlign: TextAlign.start,
+                  decoration: InputDecoration(
+                    labelText: 'wallets.name_label'.tr(),
+                  ),
+                ),
+                verticalSpace(16),
+                Text(
+                  'wallets.color_label'.tr(),
+                  style: Theme.of(dialogContext).textTheme.bodySmall,
+                ),
+                verticalSpace(8),
+                WalletColorPicker(
+                  selectedColor: selectedColor,
+                  onChanged: (color) =>
+                      setDialogState(() => selectedColor = color),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text('common.cancel'.tr()),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop((
+                name: controller.text.trim(),
+                color: selectedColor,
+              )),
+              child: Text('common.save'.tr()),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text('common.cancel'.tr()),
-          ),
-          TextButton(
-            onPressed: () =>
-                Navigator.of(dialogContext).pop(controller.text.trim()),
-            child: Text('common.save'.tr()),
-          ),
-        ],
       ),
     );
-    if (newName != null && newName.isNotEmpty && mounted) {
+    controller.dispose();
+    if (result != null && result.name.isNotEmpty && mounted) {
       context.read<WalletDetailCubit>().updateWallet(
-        name: newName,
-        colorValue: colorValue,
+        name: result.name,
+        colorValue: result.color.toARGB32(),
       );
     }
   }
@@ -144,16 +172,16 @@ class _WalletDetailScreenState extends State<WalletDetailScreen> {
             actions: [
               PopupMenuButton<String>(
                 onSelected: (value) {
-                  if (value == 'rename') {
-                    _renameWallet(wallet.name, wallet.colorValue);
+                  if (value == 'edit') {
+                    _editWallet(wallet);
                   } else if (value == 'delete') {
                     _confirmDeleteWallet();
                   }
                 },
                 itemBuilder: (context) => [
                   PopupMenuItem(
-                    value: 'rename',
-                    child: Text('common.rename'.tr()),
+                    value: 'edit',
+                    child: Text('wallets.edit_wallet_menu'.tr()),
                   ),
                   PopupMenuItem(
                     value: 'delete',

@@ -1,24 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wallet_split/core/animations/animations.dart';
 import 'package:wallet_split/core/helpers/spacing.dart';
-import 'package:wallet_split/core/theme/app_colors.dart';
 import 'package:wallet_split/core/utils/app_text_styles.dart';
 import 'package:wallet_split/features/wallets/domain/entities/wallet.dart';
 import 'package:wallet_split/features/wallets/presentation/cubit/wallets_cubit.dart';
 import 'package:wallet_split/features/wallets/presentation/cubit/wallets_state.dart';
-
-const _walletColors = <Color>[
-  AppColors.primary,
-  AppColors.secondary,
-  AppColors.third,
-  Color(0xFF9333EA),
-  Color(0xFFDB2777),
-  Color(0xFF0891B2),
-];
+import 'package:wallet_split/features/wallets/presentation/widgets/wallet_color_picker.dart';
 
 Future<void> showAddWalletSheet(BuildContext context, {Wallet? existing}) {
   final cubit = context.read<WalletsCubit>();
@@ -53,7 +43,7 @@ class _AddWalletSheetContentState extends State<_AddWalletSheetContent> {
   );
   late Color _selectedColor = widget.existing != null
       ? Color(widget.existing!.colorValue)
-      : _walletColors.first;
+      : walletPresetColors.first;
 
   bool get _isEditing => widget.existing != null;
 
@@ -78,87 +68,6 @@ class _AddWalletSheetContentState extends State<_AddWalletSheetContent> {
         colorValue: _selectedColor.toARGB32(),
       );
     }
-  }
-
-  bool get _isCustomColor => !_walletColors.any(
-    (color) => color.toARGB32() == _selectedColor.toARGB32(),
-  );
-
-  Future<void> _pickCustomColor() async {
-    final picked = await showColorPickerDialog(
-      context,
-      _selectedColor,
-      title: Text(
-        'wallets.custom_color_title'.tr(),
-        style: Theme.of(context).textTheme.titleLarge,
-      ),
-      pickersEnabled: const {
-        ColorPickerType.primary: true,
-        ColorPickerType.accent: false,
-        ColorPickerType.wheel: true,
-      },
-      pickerTypeLabels: {
-        ColorPickerType.primary: 'wallets.custom_color_palette'.tr(),
-        ColorPickerType.wheel: 'wallets.custom_color_wheel'.tr(),
-      },
-      enableShadesSelection: true,
-      width: 36,
-      height: 36,
-      spacing: 6,
-      runSpacing: 6,
-      borderRadius: 18,
-      wheelDiameter: 220,
-      showColorCode: true,
-      constraints: const BoxConstraints(minWidth: 320, maxWidth: 360),
-    );
-    if (!mounted) return;
-    // The dialog returns the starting color when cancelled.
-    setState(() => _selectedColor = picked.withAlpha(0xFF));
-  }
-
-  /// A rainbow circle that opens the full color picker. Once a custom color
-  /// is chosen, the circle shows that color with a check mark.
-  Widget _buildCustomColorButton(BuildContext context) {
-    final isSelected = _isCustomColor;
-    return Tooltip(
-      message: 'wallets.custom_color_title'.tr(),
-      child: AnimatedTap(
-        onTap: _pickCustomColor,
-        child: Container(
-          width: 36.w,
-          height: 36.w,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: isSelected ? _selectedColor : null,
-            gradient: isSelected
-                ? null
-                : const SweepGradient(
-                    colors: [
-                      Colors.red,
-                      Colors.orange,
-                      Colors.yellow,
-                      Colors.green,
-                      Colors.cyan,
-                      Colors.blue,
-                      Colors.purple,
-                      Colors.red,
-                    ],
-                  ),
-            border: isSelected
-                ? Border.all(
-                    color: Theme.of(context).colorScheme.onSurface,
-                    width: 2,
-                  )
-                : null,
-          ),
-          child: Icon(
-            isSelected ? Icons.check : Icons.colorize_rounded,
-            color: Colors.white,
-            size: 18,
-          ),
-        ),
-      ),
-    );
   }
 
   @override
@@ -219,33 +128,9 @@ class _AddWalletSheetContentState extends State<_AddWalletSheetContent> {
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               verticalSpace(8),
-              Wrap(
-                spacing: 12.w,
-                runSpacing: 12.h,
-                children: _walletColors.map<Widget>((color) {
-                  final isSelected = color.toARGB32() == _selectedColor.toARGB32();
-                  return AnimatedTap(
-                    onTap: () => setState(() => _selectedColor = color),
-                    child: Container(
-                      width: 36.w,
-                      height: 36.w,
-                      decoration: BoxDecoration(
-                        color: color,
-                        shape: BoxShape.circle,
-                        border: isSelected
-                            ? Border.all(
-                                color: Theme.of(context).colorScheme.onSurface,
-                                width: 2,
-                              )
-                            : null,
-                      ),
-                      child: isSelected
-                          ? const Icon(Icons.check, color: Colors.white, size: 18)
-                          : null,
-                    ),
-                  );
-                }).toList()
-                  ..add(_buildCustomColorButton(context)),
+              WalletColorPicker(
+                selectedColor: _selectedColor,
+                onChanged: (color) => setState(() => _selectedColor = color),
               ),
               verticalSpace(24),
               BlocBuilder<WalletsCubit, WalletsState>(
