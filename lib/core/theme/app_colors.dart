@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary Colors
-  static const Color primary = Color(0xFF0EA05A); // emerald green — money, growth
-  static const Color secondary = Color(0xFF2563EB); // blue — secondary actions/links
-  static const Color third = Color(0xFFD4A017); // gold/amber — savings, highlights
+  static const Color primary = Color(
+    0xFF0EA05A,
+  ); // emerald green — money, growth
+  static const Color secondary = Color(
+    0xFF2563EB,
+  ); // blue — secondary actions/links
+  static const Color third = Color(
+    0xFFD4A017,
+  ); // gold/amber — savings, highlights
 
   // Light Theme Colors
   static const Color backgroundLight = Color(0xFFF8F9FA);

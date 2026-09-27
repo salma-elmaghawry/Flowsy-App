@@ -37,7 +37,8 @@
             "invalid_otp": "الرمز منتهي الصلاحية أو غير صحيح",
             "email_not_confirmed": "البريد الإلكتروني غير مؤكد",
             "weak_password": "كلمة المرور ضعيفة جداً، استخدم 6 أحرف على الأقل",
-            "user_not_found": "لا يوجد حساب بهذا البريد الإلكتروني"
+            "user_not_found": "لا يوجد حساب بهذا البريد الإلكتروني",
+            "requires_recent_login": "يرجى تسجيل الدخول مرة أخرى ثم المحاولة"
         },
         "login": {
             "title": "أهلاً بعودتك",
@@ -126,7 +127,13 @@
     "settings": {
         "title": "الإعدادات",
         "sign_out": "تسجيل الخروج",
-        "sign_out_confirm_title": "تسجيل الخروج من فلوسي؟"
+        "sign_out_confirm_title": "تسجيل الخروج من فلوسي؟",
+        "delete_account": "حذف الحساب",
+        "delete_account_title": "حذف حسابك؟",
+        "delete_account_body": "سيتم حذف حسابك وكل المحافظ والتقسيمات والمعاملات نهائياً. لا يمكن التراجع عن هذا الإجراء.",
+        "delete_account_password": "أدخل كلمة المرور للتأكيد",
+        "delete_account_confirm": "حذف نهائي",
+        "delete_account_done": "تم حذف حسابك"
     },
     "app_lock": {
         "section_title": "الأمان",

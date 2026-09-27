@@ -42,7 +42,7 @@ Future<void> setupInjection() async {
 
   // Auth feature
   getIt.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(getIt()),
+    () => AuthRemoteDataSourceImpl(getIt(), getIt()),
   );
   getIt.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(getIt()),

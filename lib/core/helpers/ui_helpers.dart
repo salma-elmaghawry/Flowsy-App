@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:wallet_split/core/theme/app_colors.dart';
 

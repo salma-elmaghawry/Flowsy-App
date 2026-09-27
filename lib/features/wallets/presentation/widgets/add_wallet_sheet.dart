@@ -31,8 +31,7 @@ class _AddWalletSheetContent extends StatefulWidget {
   const _AddWalletSheetContent({this.existing});
 
   @override
-  State<_AddWalletSheetContent> createState() =>
-      _AddWalletSheetContentState();
+  State<_AddWalletSheetContent> createState() => _AddWalletSheetContentState();
 }
 
 class _AddWalletSheetContentState extends State<_AddWalletSheetContent> {

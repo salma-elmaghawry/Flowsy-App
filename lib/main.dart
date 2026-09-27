@@ -17,7 +17,9 @@ void main() async {
   await setupInjection();
 
   final savedLocaleCode = getIt<SharedPreferences>().getString('app_locale');
-  final startLocale = (savedLocaleCode != null) ? Locale(savedLocaleCode) : null;
+  final startLocale = (savedLocaleCode != null)
+      ? Locale(savedLocaleCode)
+      : null;
 
   runApp(
     EasyLocalization(

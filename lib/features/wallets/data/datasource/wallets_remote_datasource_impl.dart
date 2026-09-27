@@ -42,13 +42,14 @@ class WalletsRemoteDataSourceImpl implements WalletsRemoteDataSource {
   @override
   Stream<List<WalletModel>> watchWallets() {
     final uid = _requireUid();
-    return _walletsCol(
-      uid,
-    ).orderBy('createdAt', descending: true).snapshots().map(
-      (snap) => snap.docs
-          .map((d) => WalletModel.fromMap(d.id, d.data()))
-          .toList(),
-    );
+    return _walletsCol(uid)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map(
+          (snap) => snap.docs
+              .map((d) => WalletModel.fromMap(d.id, d.data()))
+              .toList(),
+        );
   }
 
   @override
@@ -64,14 +65,14 @@ class WalletsRemoteDataSourceImpl implements WalletsRemoteDataSource {
   @override
   Stream<List<AllocationModel>> watchAllocations(String walletId) {
     final uid = _requireUid();
-    return _allocationsCol(
-      uid,
-      walletId,
-    ).orderBy('createdAt', descending: true).snapshots().map(
-      (snap) => snap.docs
-          .map((d) => AllocationModel.fromMap(d.id, walletId, d.data()))
-          .toList(),
-    );
+    return _allocationsCol(uid, walletId)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map(
+          (snap) => snap.docs
+              .map((d) => AllocationModel.fromMap(d.id, walletId, d.data()))
+              .toList(),
+        );
   }
 
   @override
@@ -91,9 +92,7 @@ class WalletsRemoteDataSourceImpl implements WalletsRemoteDataSource {
   }
 
   @override
-  Stream<List<MoneyTransactionModel>> watchWalletTransactions(
-    String walletId,
-  ) {
+  Stream<List<MoneyTransactionModel>> watchWalletTransactions(String walletId) {
     final uid = _requireUid();
     return _transactionsCol(uid)
         .where('walletId', isEqualTo: walletId)

@@ -182,8 +182,7 @@ class _AddTransactionSheetContentState
               verticalSpace(24),
               BlocBuilder<WalletDetailCubit, WalletDetailState>(
                 builder: (context, state) {
-                  final isLoading =
-                      state.isLoading && state.action == _action;
+                  final isLoading = state.isLoading && state.action == _action;
                   return AnimatedButton(
                     isLoading: isLoading,
                     onPressed: _submit,

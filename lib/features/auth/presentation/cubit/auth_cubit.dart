@@ -97,8 +97,31 @@ class AuthCubit extends Cubit<AuthState> {
           action: AuthAction.signOut,
         ),
       ),
-      (_) =>
-          emit(const AuthState(status: Status.success, action: AuthAction.signOut)),
+      (_) => emit(
+        const AuthState(status: Status.success, action: AuthAction.signOut),
+      ),
+    );
+  }
+
+  Future<void> deleteAccount({required String password}) async {
+    emit(
+      state.copyWith(status: Status.loading, action: AuthAction.deleteAccount),
+    );
+    final result = await _repository.deleteAccount(password: password);
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          status: Status.failure,
+          message: failure.message,
+          action: AuthAction.deleteAccount,
+        ),
+      ),
+      (_) => emit(
+        const AuthState(
+          status: Status.success,
+          action: AuthAction.deleteAccount,
+        ),
+      ),
     );
   }
 }

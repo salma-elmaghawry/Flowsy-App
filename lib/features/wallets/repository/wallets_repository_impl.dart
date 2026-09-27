@@ -39,9 +39,7 @@ class WalletsRepositoryImpl implements WalletsRepository {
     String walletId,
   ) async* {
     try {
-      await for (final models in _remoteDataSource.watchAllocations(
-        walletId,
-      )) {
+      await for (final models in _remoteDataSource.watchAllocations(walletId)) {
         yield Right(models.map((m) => m.toEntity()).toList());
       }
     } catch (e) {

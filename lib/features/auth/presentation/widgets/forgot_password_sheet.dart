@@ -88,10 +88,7 @@ class _ForgotPasswordSheetState extends State<_ForgotPasswordSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'auth.forgot.title'.tr(),
-            style: theme.textTheme.displaySmall,
-          ),
+          Text('auth.forgot.title'.tr(), style: theme.textTheme.displaySmall),
           verticalSpace(8),
           Text('auth.forgot.message'.tr(), style: theme.textTheme.bodyMedium),
           verticalSpace(20),

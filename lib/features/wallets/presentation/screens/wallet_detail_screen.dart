@@ -75,10 +75,9 @@ class _WalletDetailScreenState extends State<WalletDetailScreen> {
               child: Text('common.cancel'.tr()),
             ),
             TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop((
-                name: controller.text.trim(),
-                color: selectedColor,
-              )),
+              onPressed: () => Navigator.of(
+                dialogContext,
+              ).pop((name: controller.text.trim(), color: selectedColor)),
               child: Text('common.save'.tr()),
             ),
           ],
@@ -109,7 +108,9 @@ class _WalletDetailScreenState extends State<WalletDetailScreen> {
             onPressed: () => Navigator.of(dialogContext).pop(true),
             child: Text(
               'common.delete'.tr(),
-              style: TextStyle(color: Theme.of(dialogContext).colorScheme.error),
+              style: TextStyle(
+                color: Theme.of(dialogContext).colorScheme.error,
+              ),
             ),
           ),
         ],
@@ -135,7 +136,9 @@ class _WalletDetailScreenState extends State<WalletDetailScreen> {
             onPressed: () => Navigator.of(dialogContext).pop(true),
             child: Text(
               'common.delete'.tr(),
-              style: TextStyle(color: Theme.of(dialogContext).colorScheme.error),
+              style: TextStyle(
+                color: Theme.of(dialogContext).colorScheme.error,
+              ),
             ),
           ),
         ],

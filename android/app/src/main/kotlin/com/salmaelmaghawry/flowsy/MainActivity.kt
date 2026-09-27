@@ -1,4 +1,4 @@
-package com.example.wallet_split
+package com.salmaelmaghawry.flowsy
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

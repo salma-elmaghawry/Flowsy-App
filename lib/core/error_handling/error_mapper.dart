@@ -18,9 +18,7 @@ class ErrorMapper {
     }
 
     if (error is NotAuthenticatedException) {
-      return NotAuthenticatedFailure(
-        message: 'errors.not_authenticated'.tr(),
-      );
+      return NotAuthenticatedFailure(message: 'errors.not_authenticated'.tr());
     }
 
     if (error is FirebaseAuthException) {
@@ -40,15 +38,17 @@ class ErrorMapper {
             message: 'auth.errors.email_in_use'.tr(),
           );
         case 'weak-password':
-          return WeakPasswordFailure(
-            message: 'auth.errors.weak_password'.tr(),
-          );
+          return WeakPasswordFailure(message: 'auth.errors.weak_password'.tr());
         case 'too-many-requests':
           return TooManyRequestsFailure(
             message: 'auth.errors.rate_limit_exceeded'.tr(),
           );
         case 'network-request-failed':
           return NetworkFailure(message: 'errors.network_error'.tr());
+        case 'requires-recent-login':
+          return InvalidCredentialsFailure(
+            message: 'auth.errors.requires_recent_login'.tr(),
+          );
         default:
           return UnexpectedFailure(message: 'errors.unexpected_error'.tr());
       }

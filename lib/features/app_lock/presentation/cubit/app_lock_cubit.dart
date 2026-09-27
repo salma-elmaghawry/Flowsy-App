@@ -22,10 +22,7 @@ class AppLockCubit extends Cubit<AppLockState> {
     final supported = await _service.isDeviceSupported();
     // If the phone's screen lock was removed, never trap the user out.
     emit(
-      state.copyWith(
-        supported: supported,
-        locked: state.enabled && supported,
-      ),
+      state.copyWith(supported: supported, locked: state.enabled && supported),
     );
   }
 

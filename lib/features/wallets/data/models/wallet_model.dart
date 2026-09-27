@@ -22,8 +22,7 @@ class WalletModel {
       name: map['name'] as String? ?? '',
       colorValue: map['colorValue'] as int? ?? 0xFF0EA05A,
       balance: (map['balance'] as num?)?.toDouble() ?? 0,
-      createdAt:
-          (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
 

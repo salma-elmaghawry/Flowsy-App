@@ -36,8 +36,7 @@ class AppRouter {
         final wallet = settings.arguments as Wallet;
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
-            create: (_) =>
-                getIt<WalletDetailCubit>(param1: wallet.id),
+            create: (_) => getIt<WalletDetailCubit>(param1: wallet.id),
             child: WalletDetailScreen(wallet: wallet),
           ),
         );

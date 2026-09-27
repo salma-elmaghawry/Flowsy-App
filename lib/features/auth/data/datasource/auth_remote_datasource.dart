@@ -17,4 +17,8 @@ abstract class AuthRemoteDataSource {
   Future<void> signOut();
 
   Future<void> sendPasswordResetEmail(String email);
+
+  /// Re-authenticates with [password], erases every Firestore document owned
+  /// by the user, then deletes the Firebase Auth account itself.
+  Future<void> deleteAccount({required String password});
 }

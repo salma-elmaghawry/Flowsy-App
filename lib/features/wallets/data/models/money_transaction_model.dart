@@ -36,8 +36,7 @@ class MoneyTransactionModel {
           : TransactionType.spend,
       amount: (map['amount'] as num?)?.toDouble() ?? 0,
       note: map['note'] as String?,
-      createdAt:
-          (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
 

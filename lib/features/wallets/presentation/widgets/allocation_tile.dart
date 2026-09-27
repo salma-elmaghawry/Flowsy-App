@@ -44,7 +44,8 @@ class AllocationTile extends StatelessWidget {
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
-                  if (allocation.note != null && allocation.note!.isNotEmpty) ...[
+                  if (allocation.note != null &&
+                      allocation.note!.isNotEmpty) ...[
                     verticalSpace(2),
                     Text(
                       allocation.note!,

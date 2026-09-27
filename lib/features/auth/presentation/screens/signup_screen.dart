@@ -99,10 +99,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         labelText: 'auth.signup.confirm_password_label'.tr(),
                         hintText: 'auth.signup.confirm_password_hint'.tr(),
                       ),
-                      validator: (value) => AppValidators.validateConfirmPassword(
-                        value,
-                        _passwordController.text,
-                      ),
+                      validator: (value) =>
+                          AppValidators.validateConfirmPassword(
+                            value,
+                            _passwordController.text,
+                          ),
                     ).fadeInSlideUp(delay: const Duration(milliseconds: 150)),
                     verticalSpace(28),
                     AnimatedButton(

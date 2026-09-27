@@ -8,7 +8,7 @@
       "android": {
         "default": {
           "projectId": "push-notification-1cf6d",
-          "appId": "1:255359184841:android:c184bd8d28922fb3d1c218",
+          "appId": "1:255359184841:android:1263800fa13cd878d1c218",
           "fileOutput": "android/app/google-services.json"
         }
       },
@@ -24,11 +24,19 @@
         "lib/firebase_options.dart": {
           "projectId": "push-notification-1cf6d",
           "configurations": {
-            "android": "1:255359184841:android:c184bd8d28922fb3d1c218",
+            "android": "1:255359184841:android:1263800fa13cd878d1c218",
             "ios": "1:255359184841:ios:ed94638c419f25c1d1c218"
           }
         }
       }
     }
+  },
+  "hosting": {
+    "public": "hosting",
+    "ignore": [
+      "firebase.json",
+      "**/.*"
+    ],
+    "cleanUrls": true
   }
 }

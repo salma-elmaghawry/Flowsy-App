@@ -17,22 +17,27 @@ class WalletDetailCubit extends Cubit<WalletDetailState> {
     : super(const WalletDetailState());
 
   void watchAll() {
-    emit(state.copyWith(status: Status.loading, action: WalletDetailAction.watch));
+    emit(
+      state.copyWith(status: Status.loading, action: WalletDetailAction.watch),
+    );
 
     _walletSub?.cancel();
     _walletSub = _repository.watchWallet(walletId).listen((either) {
       either.fold(
-        (failure) =>
-            emit(state.copyWith(status: Status.failure, message: failure.message)),
-        (wallet) => emit(state.copyWith(status: Status.success, wallet: wallet)),
+        (failure) => emit(
+          state.copyWith(status: Status.failure, message: failure.message),
+        ),
+        (wallet) =>
+            emit(state.copyWith(status: Status.success, wallet: wallet)),
       );
     });
 
     _allocationsSub?.cancel();
     _allocationsSub = _repository.watchAllocations(walletId).listen((either) {
       either.fold(
-        (failure) =>
-            emit(state.copyWith(status: Status.failure, message: failure.message)),
+        (failure) => emit(
+          state.copyWith(status: Status.failure, message: failure.message),
+        ),
         (allocations) => emit(state.copyWith(allocations: allocations)),
       );
     });
@@ -42,8 +47,9 @@ class WalletDetailCubit extends Cubit<WalletDetailState> {
       either,
     ) {
       either.fold(
-        (failure) =>
-            emit(state.copyWith(status: Status.failure, message: failure.message)),
+        (failure) => emit(
+          state.copyWith(status: Status.failure, message: failure.message),
+        ),
         (transactions) => emit(state.copyWith(transactions: transactions)),
       );
     });
@@ -62,14 +68,17 @@ class WalletDetailCubit extends Cubit<WalletDetailState> {
       colorValue: colorValue,
     );
     result.fold(
-      (failure) =>
-          emit(state.copyWith(status: Status.failure, message: failure.message)),
+      (failure) => emit(
+        state.copyWith(status: Status.failure, message: failure.message),
+      ),
       (_) => emit(state.copyWith(status: Status.success)),
     );
   }
 
   Future<void> topUp({required double amount, String? note}) async {
-    emit(state.copyWith(status: Status.loading, action: WalletDetailAction.topUp));
+    emit(
+      state.copyWith(status: Status.loading, action: WalletDetailAction.topUp),
+    );
     final result = await _repository.topUpWallet(
       walletId: walletId,
       amount: amount,
@@ -84,7 +93,10 @@ class WalletDetailCubit extends Cubit<WalletDetailState> {
         ),
       ),
       (_) => emit(
-        state.copyWith(status: Status.success, action: WalletDetailAction.topUp),
+        state.copyWith(
+          status: Status.success,
+          action: WalletDetailAction.topUp,
+        ),
       ),
     );
   }
@@ -94,7 +106,9 @@ class WalletDetailCubit extends Cubit<WalletDetailState> {
     String? allocationId,
     String? note,
   }) async {
-    emit(state.copyWith(status: Status.loading, action: WalletDetailAction.spend));
+    emit(
+      state.copyWith(status: Status.loading, action: WalletDetailAction.spend),
+    );
     final result = await _repository.spendFromWallet(
       walletId: walletId,
       amount: amount,
@@ -110,7 +124,10 @@ class WalletDetailCubit extends Cubit<WalletDetailState> {
         ),
       ),
       (_) => emit(
-        state.copyWith(status: Status.success, action: WalletDetailAction.spend),
+        state.copyWith(
+          status: Status.success,
+          action: WalletDetailAction.spend,
+        ),
       ),
     );
   }

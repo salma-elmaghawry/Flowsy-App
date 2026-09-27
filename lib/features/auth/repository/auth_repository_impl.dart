@@ -68,4 +68,16 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(ErrorMapper.map(e));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteAccount({
+    required String password,
+  }) async {
+    try {
+      await _remoteDataSource.deleteAccount(password: password);
+      return const Right(null);
+    } catch (e) {
+      return Left(ErrorMapper.map(e));
+    }
+  }
 }

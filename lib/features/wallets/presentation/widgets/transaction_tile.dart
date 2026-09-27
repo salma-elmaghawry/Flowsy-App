@@ -57,9 +57,9 @@ class TransactionTile extends StatelessWidget {
                   isTopUp
                       ? 'transactions.type_top_up'.tr()
                       : 'transactions.type_spend'.tr(),
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
                 ),
                 if (subtitleParts.isNotEmpty) ...[
                   verticalSpace(2),
@@ -77,17 +77,15 @@ class TransactionTile extends StatelessWidget {
             children: [
               Text(
                 '$sign${formatCurrency(transaction.amount)}',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: color,
                 ),
               ),
               Text(
-                DateFormat.MMMd(context.locale.toString()).add_Hm().format(
-                  transaction.createdAt,
-                ),
+                DateFormat.MMMd(
+                  context.locale.toString(),
+                ).add_Hm().format(transaction.createdAt),
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ],

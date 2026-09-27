@@ -40,8 +40,9 @@ class WalletsCubit extends Cubit<WalletsState> {
       either,
     ) {
       either.fold(
-        (failure) =>
-            emit(state.copyWith(status: Status.failure, message: failure.message)),
+        (failure) => emit(
+          state.copyWith(status: Status.failure, message: failure.message),
+        ),
         (transactions) =>
             emit(state.copyWith(recentTransactions: transactions)),
       );
@@ -71,7 +72,10 @@ class WalletsCubit extends Cubit<WalletsState> {
         ),
       ),
       (_) => emit(
-        state.copyWith(status: Status.success, action: WalletsAction.createWallet),
+        state.copyWith(
+          status: Status.success,
+          action: WalletsAction.createWallet,
+        ),
       ),
     );
   }
@@ -101,7 +105,10 @@ class WalletsCubit extends Cubit<WalletsState> {
         ),
       ),
       (_) => emit(
-        state.copyWith(status: Status.success, action: WalletsAction.updateWallet),
+        state.copyWith(
+          status: Status.success,
+          action: WalletsAction.updateWallet,
+        ),
       ),
     );
   }
@@ -123,7 +130,10 @@ class WalletsCubit extends Cubit<WalletsState> {
         ),
       ),
       (_) => emit(
-        state.copyWith(status: Status.success, action: WalletsAction.deleteWallet),
+        state.copyWith(
+          status: Status.success,
+          action: WalletsAction.deleteWallet,
+        ),
       ),
     );
   }

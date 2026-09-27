@@ -37,7 +37,8 @@
             "invalid_otp": "Code has expired or is invalid",
             "email_not_confirmed": "Email not confirmed",
             "weak_password": "Password is too weak. Use at least 6 characters",
-            "user_not_found": "No account found with this email"
+            "user_not_found": "No account found with this email",
+            "requires_recent_login": "Please sign in again, then retry"
         },
         "login": {
             "title": "Welcome back",
@@ -126,7 +127,13 @@
     "settings": {
         "title": "Settings",
         "sign_out": "Sign out",
-        "sign_out_confirm_title": "Sign out of Flowsy?"
+        "sign_out_confirm_title": "Sign out of Flowsy?",
+        "delete_account": "Delete account",
+        "delete_account_title": "Delete your account?",
+        "delete_account_body": "This permanently deletes your account and all your wallets, allocations, and transactions. This cannot be undone.",
+        "delete_account_password": "Enter your password to confirm",
+        "delete_account_confirm": "Delete permanently",
+        "delete_account_done": "Your account has been deleted"
     },
     "app_lock": {
         "section_title": "Security",
