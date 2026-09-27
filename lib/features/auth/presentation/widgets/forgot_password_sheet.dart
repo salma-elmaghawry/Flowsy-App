@@ -2,12 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wallet_split/core/animations/animations.dart';
-import 'package:wallet_split/core/helpers/app_validators.dart';
-import 'package:wallet_split/core/helpers/spacing.dart';
-import 'package:wallet_split/core/utils/app_text_styles.dart';
-import 'package:wallet_split/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:wallet_split/features/auth/presentation/cubit/auth_state.dart';
+import 'package:flowsy/core/animations/animations.dart';
+import 'package:flowsy/core/helpers/app_validators.dart';
+import 'package:flowsy/core/helpers/spacing.dart';
+import 'package:flowsy/core/utils/app_text_styles.dart';
+import 'package:flowsy/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:flowsy/features/auth/presentation/cubit/auth_state.dart';
 
 /// Asks for the account email and sends a Firebase password reset link.
 Future<void> showForgotPasswordSheet(

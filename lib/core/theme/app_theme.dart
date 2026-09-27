@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:wallet_split/core/utils/app_text_styles.dart';
+import 'package:flowsy/core/utils/app_text_styles.dart';
 import 'app_colors.dart';
 
 class AppTheme {

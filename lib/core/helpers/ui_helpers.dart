@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:wallet_split/core/theme/app_colors.dart';
+import 'package:flowsy/core/theme/app_colors.dart';
 
 Widget centeredCupertinoLoader({Color? color, double size = 30}) {
   return Center(

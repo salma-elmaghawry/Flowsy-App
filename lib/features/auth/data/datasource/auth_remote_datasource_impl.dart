@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb;
-import 'package:wallet_split/core/error_handling/app_exceptions.dart';
-import 'package:wallet_split/features/auth/data/datasource/auth_remote_datasource.dart';
-import 'package:wallet_split/features/auth/data/models/app_user_model.dart';
+import 'package:flowsy/core/error_handling/app_exceptions.dart';
+import 'package:flowsy/features/auth/data/datasource/auth_remote_datasource.dart';
+import 'package:flowsy/features/auth/data/models/app_user_model.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final fb.FirebaseAuth _firebaseAuth;

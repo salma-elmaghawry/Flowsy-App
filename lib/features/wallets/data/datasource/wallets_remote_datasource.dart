@@ -1,6 +1,6 @@
-import 'package:wallet_split/features/wallets/data/models/allocation_model.dart';
-import 'package:wallet_split/features/wallets/data/models/money_transaction_model.dart';
-import 'package:wallet_split/features/wallets/data/models/wallet_model.dart';
+import 'package:flowsy/features/wallets/data/models/allocation_model.dart';
+import 'package:flowsy/features/wallets/data/models/money_transaction_model.dart';
+import 'package:flowsy/features/wallets/data/models/wallet_model.dart';
 
 abstract class WalletsRemoteDataSource {
   Stream<List<WalletModel>> watchWallets();

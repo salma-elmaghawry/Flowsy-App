@@ -1,4 +1,4 @@
-import 'package:wallet_split/features/auth/domain/entities/app_user.dart';
+import 'package:flowsy/features/auth/domain/entities/app_user.dart';
 
 class AppUserModel {
   final String uid;

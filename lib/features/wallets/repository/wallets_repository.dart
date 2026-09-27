@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:wallet_split/core/error_handling/failures.dart';
-import 'package:wallet_split/features/wallets/domain/entities/allocation.dart';
-import 'package:wallet_split/features/wallets/domain/entities/money_transaction.dart';
-import 'package:wallet_split/features/wallets/domain/entities/wallet.dart';
+import 'package:flowsy/core/error_handling/failures.dart';
+import 'package:flowsy/features/wallets/domain/entities/allocation.dart';
+import 'package:flowsy/features/wallets/domain/entities/money_transaction.dart';
+import 'package:flowsy/features/wallets/domain/entities/wallet.dart';
 
 abstract class WalletsRepository {
   Stream<Either<Failure, List<Wallet>>> watchWallets();

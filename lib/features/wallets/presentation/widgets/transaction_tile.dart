@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wallet_split/core/helpers/currency_formatter.dart';
-import 'package:wallet_split/core/helpers/spacing.dart';
-import 'package:wallet_split/core/theme/app_colors.dart';
-import 'package:wallet_split/features/wallets/domain/entities/money_transaction.dart';
+import 'package:flowsy/core/helpers/currency_formatter.dart';
+import 'package:flowsy/core/helpers/spacing.dart';
+import 'package:flowsy/core/theme/app_colors.dart';
+import 'package:flowsy/features/wallets/domain/entities/money_transaction.dart';
 
 class TransactionTile extends StatelessWidget {
   final MoneyTransaction transaction;

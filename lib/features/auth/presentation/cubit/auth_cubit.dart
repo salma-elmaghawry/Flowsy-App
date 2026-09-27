@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallet_split/core/bloc/base_bloc.dart';
-import 'package:wallet_split/features/auth/presentation/cubit/auth_state.dart';
-import 'package:wallet_split/features/auth/repository/auth_repository.dart';
+import 'package:flowsy/core/bloc/base_bloc.dart';
+import 'package:flowsy/features/auth/presentation/cubit/auth_state.dart';
+import 'package:flowsy/features/auth/repository/auth_repository.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository _repository;

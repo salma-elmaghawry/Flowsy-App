@@ -1,4 +1,4 @@
-name: wallet_split
+name: flowsy
 description: "Flowsy - split your money into wallets and track every pound."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -50,6 +50,9 @@ dependencies:
   cloud_firestore: ^6.9.0
   local_auth: ^3.0.2
   flex_color_picker: ^3.8.0
+  flutter_local_notifications: ^22.3.1
+  timezone: ^0.11.1
+  flutter_timezone: ^5.1.0
 
 dev_dependencies:
   flutter_test:

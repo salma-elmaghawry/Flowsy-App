@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wallet_split/core/bloc/base_bloc.dart';
-import 'package:wallet_split/core/error_handling/failures.dart';
-import 'package:wallet_split/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:wallet_split/features/auth/presentation/cubit/auth_state.dart';
-import 'package:wallet_split/features/auth/repository/auth_repository.dart';
+import 'package:flowsy/core/bloc/base_bloc.dart';
+import 'package:flowsy/core/error_handling/failures.dart';
+import 'package:flowsy/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:flowsy/features/auth/presentation/cubit/auth_state.dart';
+import 'package:flowsy/features/auth/repository/auth_repository.dart';
 
 class _FakeAuthRepo implements AuthRepository {
   String? sentTo;

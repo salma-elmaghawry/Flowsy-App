@@ -2,22 +2,23 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wallet_split/core/animations/animations.dart';
-import 'package:wallet_split/core/helpers/currency_formatter.dart';
-import 'package:wallet_split/core/helpers/extensions.dart';
-import 'package:wallet_split/core/helpers/spacing.dart';
-import 'package:wallet_split/core/routes/routes.dart';
-import 'package:wallet_split/core/theme/app_colors.dart';
-import 'package:wallet_split/features/wallets/domain/entities/allocation.dart';
-import 'package:wallet_split/features/wallets/domain/entities/money_transaction.dart';
-import 'package:wallet_split/features/wallets/domain/entities/wallet.dart';
-import 'package:wallet_split/features/wallets/presentation/cubit/wallet_detail_cubit.dart';
-import 'package:wallet_split/features/wallets/presentation/cubit/wallet_detail_state.dart';
-import 'package:wallet_split/features/wallets/presentation/widgets/add_allocation_sheet.dart';
-import 'package:wallet_split/features/wallets/presentation/widgets/add_transaction_sheet.dart';
-import 'package:wallet_split/features/wallets/presentation/widgets/allocation_tile.dart';
-import 'package:wallet_split/features/wallets/presentation/widgets/transaction_tile.dart';
-import 'package:wallet_split/features/wallets/presentation/widgets/wallet_color_picker.dart';
+import 'package:flowsy/core/animations/animations.dart';
+import 'package:flowsy/core/helpers/currency_formatter.dart';
+import 'package:flowsy/core/helpers/extensions.dart';
+import 'package:flowsy/core/helpers/responsive.dart';
+import 'package:flowsy/core/helpers/spacing.dart';
+import 'package:flowsy/core/routes/routes.dart';
+import 'package:flowsy/core/theme/app_colors.dart';
+import 'package:flowsy/features/wallets/domain/entities/allocation.dart';
+import 'package:flowsy/features/wallets/domain/entities/money_transaction.dart';
+import 'package:flowsy/features/wallets/domain/entities/wallet.dart';
+import 'package:flowsy/features/wallets/presentation/cubit/wallet_detail_cubit.dart';
+import 'package:flowsy/features/wallets/presentation/cubit/wallet_detail_state.dart';
+import 'package:flowsy/features/wallets/presentation/widgets/add_allocation_sheet.dart';
+import 'package:flowsy/features/wallets/presentation/widgets/add_transaction_sheet.dart';
+import 'package:flowsy/features/wallets/presentation/widgets/allocation_tile.dart';
+import 'package:flowsy/features/wallets/presentation/widgets/transaction_tile.dart';
+import 'package:flowsy/features/wallets/presentation/widgets/wallet_color_picker.dart';
 
 class WalletDetailScreen extends StatefulWidget {
   final Wallet wallet;
@@ -195,7 +196,7 @@ class _WalletDetailScreenState extends State<WalletDetailScreen> {
             ],
           ),
           body: ListView(
-            padding: EdgeInsets.all(20.w),
+            padding: Responsive.scrollPadding(context),
             children: [
               _BalanceSummaryCard(
                 color: color,

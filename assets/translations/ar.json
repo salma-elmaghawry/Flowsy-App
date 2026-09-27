@@ -146,5 +146,12 @@
         "locked_title": "Flowsy مقفول",
         "locked_message": "استخدم البصمة أو الوش أو الرقم السري بتاع الموبايل عشان تكمل.",
         "unlock": "افتح"
+    },
+    "reminders": {
+        "section_title": "التذكيرات",
+        "toggle_title": "تذكير يومي بالمصاريف",
+        "toggle_subtitle": "الساعة ٥ و ٩ بالليل لو مفتحتش Flowsy النهارده",
+        "notification_title": "صرفت حاجة النهارده؟",
+        "notification_body": "خد ثانية وسجّل مصاريف النهارده في Flowsy."
     }
 }

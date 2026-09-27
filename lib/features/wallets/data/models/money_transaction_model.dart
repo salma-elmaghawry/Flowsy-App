@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:wallet_split/features/wallets/domain/entities/money_transaction.dart';
+import 'package:flowsy/features/wallets/domain/entities/money_transaction.dart';
 
 class MoneyTransactionModel {
   final String id;

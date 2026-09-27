@@ -146,5 +146,12 @@
         "locked_title": "Flowsy is locked",
         "locked_message": "Use your fingerprint, face or phone PIN to continue.",
         "unlock": "Unlock"
+    },
+    "reminders": {
+        "section_title": "Reminders",
+        "toggle_title": "Daily spending reminder",
+        "toggle_subtitle": "At 5 PM and 9 PM if you haven't opened Flowsy today",
+        "notification_title": "Spent anything today?",
+        "notification_body": "Take a second to add today's spending in Flowsy."
     }
 }

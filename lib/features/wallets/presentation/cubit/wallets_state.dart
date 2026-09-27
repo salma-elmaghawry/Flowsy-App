@@ -1,6 +1,6 @@
-import 'package:wallet_split/core/bloc/base_bloc.dart';
-import 'package:wallet_split/features/wallets/domain/entities/money_transaction.dart';
-import 'package:wallet_split/features/wallets/domain/entities/wallet.dart';
+import 'package:flowsy/core/bloc/base_bloc.dart';
+import 'package:flowsy/features/wallets/domain/entities/money_transaction.dart';
+import 'package:flowsy/features/wallets/domain/entities/wallet.dart';
 
 enum WalletsAction { watch, createWallet, updateWallet, deleteWallet }
 

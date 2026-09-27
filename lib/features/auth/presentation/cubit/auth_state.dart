@@ -1,5 +1,5 @@
-import 'package:wallet_split/core/bloc/base_bloc.dart';
-import 'package:wallet_split/features/auth/domain/entities/app_user.dart';
+import 'package:flowsy/core/bloc/base_bloc.dart';
+import 'package:flowsy/features/auth/domain/entities/app_user.dart';
 
 enum AuthAction {
   checkStatus,

@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:wallet_split/core/error_handling/error_mapper.dart';
-import 'package:wallet_split/core/error_handling/failures.dart';
-import 'package:wallet_split/features/auth/data/datasource/auth_remote_datasource.dart';
-import 'package:wallet_split/features/auth/domain/entities/app_user.dart';
-import 'package:wallet_split/features/auth/repository/auth_repository.dart';
+import 'package:flowsy/core/error_handling/error_mapper.dart';
+import 'package:flowsy/core/error_handling/failures.dart';
+import 'package:flowsy/features/auth/data/datasource/auth_remote_datasource.dart';
+import 'package:flowsy/features/auth/domain/entities/app_user.dart';
+import 'package:flowsy/features/auth/repository/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _remoteDataSource;

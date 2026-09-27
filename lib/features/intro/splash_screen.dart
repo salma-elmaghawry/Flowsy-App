@@ -2,12 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wallet_split/core/animations/animations.dart';
-import 'package:wallet_split/core/helpers/extensions.dart';
-import 'package:wallet_split/core/helpers/spacing.dart';
-import 'package:wallet_split/core/routes/routes.dart';
-import 'package:wallet_split/core/utils/app_text_styles.dart';
-import 'package:wallet_split/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:flowsy/core/animations/animations.dart';
+import 'package:flowsy/core/helpers/extensions.dart';
+import 'package:flowsy/core/helpers/spacing.dart';
+import 'package:flowsy/core/routes/routes.dart';
+import 'package:flowsy/core/utils/app_text_styles.dart';
+import 'package:flowsy/features/auth/presentation/cubit/auth_cubit.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

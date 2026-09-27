@@ -1,29 +1,43 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wallet_split/core/helpers/extensions.dart';
-import 'package:wallet_split/core/helpers/spacing.dart';
-import 'package:wallet_split/core/injection/injection_container.dart';
-import 'package:wallet_split/core/routes/routes.dart';
-import 'package:wallet_split/core/theme/controller/theme_cubit.dart';
-import 'package:wallet_split/core/theme/controller/theme_state.dart';
-import 'package:wallet_split/core/widgets/loading_overlay.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wallet_split/features/app_lock/presentation/cubit/app_lock_cubit.dart';
-import 'package:wallet_split/features/app_lock/presentation/cubit/app_lock_state.dart';
-import 'package:wallet_split/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:wallet_split/features/auth/presentation/cubit/auth_state.dart';
+import 'package:flowsy/core/helpers/extensions.dart';
+import 'package:flowsy/core/helpers/responsive.dart';
+import 'package:flowsy/core/helpers/spacing.dart';
+import 'package:flowsy/core/injection/injection_container.dart';
+import 'package:flowsy/core/routes/routes.dart';
+import 'package:flowsy/core/services/daily_reminder_service.dart';
+import 'package:flowsy/core/theme/controller/theme_cubit.dart';
+import 'package:flowsy/core/theme/controller/theme_state.dart';
+import 'package:flowsy/core/widgets/loading_overlay.dart';
+import 'package:flowsy/features/app_lock/presentation/cubit/app_lock_cubit.dart';
+import 'package:flowsy/features/app_lock/presentation/cubit/app_lock_state.dart';
+import 'package:flowsy/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:flowsy/features/auth/presentation/cubit/auth_state.dart';
+import 'package:flowsy/features/settings/presentation/widgets/choice_group.dart';
+import 'package:flowsy/features/settings/presentation/widgets/delete_account_dialog.dart';
+import 'package:flowsy/features/settings/presentation/widgets/reminders_tile.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
-  Future<void> _changeLocale(BuildContext context, Locale locale) async {
-    await context.setLocale(locale);
-    await getIt<SharedPreferences>().setString(
-      'app_locale',
-      locale.languageCode,
-    );
+  static const _languages = {'ar': 'العربية', 'en': 'English'};
+  static const _themeModes = [
+    ThemeMode.light,
+    ThemeMode.dark,
+    ThemeMode.system,
+  ];
+
+  void _showSnack(BuildContext context, String message) => ScaffoldMessenger.of(
+    context,
+  ).showSnackBar(SnackBar(content: Text(message)));
+
+  Future<void> _changeLocale(BuildContext context, String code) async {
+    await context.setLocale(Locale(code));
+    await getIt<SharedPreferences>().setString('app_locale', code);
+    // Queued reminders carry their text, so re-queue them in the new language.
+    await getIt<DailyReminderService>().refresh();
   }
 
   Future<void> _toggleAppLock(BuildContext context, bool value) async {
@@ -37,6 +51,15 @@ class SettingsScreen extends StatelessWidget {
         SnackBar(content: Text('app_lock.enable_failed'.tr())),
       );
     }
+  }
+
+  /// Clears reminders, then runs [action] on the [AuthCubit].
+  Future<void> _leaveAccount(
+    BuildContext context,
+    void Function(AuthCubit cubit) action,
+  ) async {
+    await getIt<DailyReminderService>().cancelAll();
+    if (context.mounted) action(context.read<AuthCubit>());
   }
 
   Future<void> _confirmSignOut(BuildContext context) async {
@@ -57,230 +80,120 @@ class SettingsScreen extends StatelessWidget {
       ),
     );
     if (confirmed == true && context.mounted) {
-      context.read<AuthCubit>().signOut();
+      await _leaveAccount(context, (cubit) => cubit.signOut());
     }
   }
 
   Future<void> _confirmDeleteAccount(BuildContext context) async {
     final password = await showDialog<String>(
       context: context,
-      builder: (_) => const _DeleteAccountDialog(),
+      builder: (_) => const DeleteAccountDialog(),
     );
     if (password != null && password.isNotEmpty && context.mounted) {
-      context.read<AuthCubit>().deleteAccount(password: password);
+      await _leaveAccount(
+        context,
+        (cubit) => cubit.deleteAccount(password: password),
+      );
     }
   }
 
+  void _onAuthChanged(BuildContext context, AuthState state) {
+    final isDelete = state.action == AuthAction.deleteAccount;
+    final leftAccount = isDelete || state.action == AuthAction.signOut;
+    if (leftAccount && state.isSuccess) {
+      if (isDelete) _showSnack(context, 'settings.delete_account_done'.tr());
+      context.pushNamedAndRemoveUntil(Routes.login, predicate: (_) => false);
+    } else if (isDelete && state.isFailure && state.message != null) {
+      _showSnack(context, state.message!);
+    }
+  }
+
+  Widget _label(BuildContext context, String key) =>
+      Text(key.tr(), style: Theme.of(context).textTheme.labelMedium);
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final danger = ButtonStyle(
+      foregroundColor: WidgetStatePropertyAll(theme.colorScheme.error),
+    );
     return BlocConsumer<AuthCubit, AuthState>(
       listenWhen: (previous, current) => previous != current,
-      listener: (context, state) {
-        final leftAccount =
-            state.action == AuthAction.signOut ||
-            state.action == AuthAction.deleteAccount;
-        if (leftAccount && state.isSuccess) {
-          if (state.action == AuthAction.deleteAccount) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('settings.delete_account_done'.tr())),
-            );
-          }
-          context.pushNamedAndRemoveUntil(
-            Routes.login,
-            predicate: (route) => false,
-          );
-        } else if (state.action == AuthAction.deleteAccount &&
-            state.isFailure &&
-            state.message != null) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message!)));
-        }
-      },
+      listener: _onAuthChanged,
       builder: (context, authState) => LoadingOverlay(
         isLoading:
             authState.action == AuthAction.deleteAccount && authState.isLoading,
         child: Scaffold(
           appBar: AppBar(title: Text('settings.title'.tr())),
           body: ListView(
-            padding: EdgeInsets.all(20.w),
+            padding: Responsive.scrollPadding(context),
             children: [
-              Text(
-                'preferences.language'.tr(),
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
+              _label(context, 'preferences.language'),
               verticalSpace(8),
-              Row(
-                children: [
-                  Expanded(
-                    child: ChoiceChip(
-                      label: const Text('العربية'),
-                      selected: context.locale.languageCode == 'ar',
-                      onSelected: (_) =>
-                          _changeLocale(context, const Locale('ar')),
-                    ),
-                  ),
-                  horizontalSpace(12),
-                  Expanded(
-                    child: ChoiceChip(
-                      label: const Text('English'),
-                      selected: context.locale.languageCode == 'en',
-                      onSelected: (_) =>
-                          _changeLocale(context, const Locale('en')),
-                    ),
-                  ),
-                ],
+              ChoiceGroup<String>(
+                expanded: true,
+                options: _languages,
+                selected: context.locale.languageCode,
+                onSelected: (code) => _changeLocale(context, code),
               ),
               verticalSpace(24),
-              Text(
-                'preferences.theme'.tr(),
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
+              _label(context, 'preferences.theme'),
               verticalSpace(8),
               BlocBuilder<ThemeCubit, ThemeState>(
-                builder: (context, state) {
-                  return Wrap(
-                    spacing: 12.w,
-                    children: [
-                      ChoiceChip(
-                        label: Text('preferences.theme_light'.tr()),
-                        selected: state.themeMode == ThemeMode.light,
-                        onSelected: (_) => context
-                            .read<ThemeCubit>()
-                            .setThemeMode(ThemeMode.light),
-                      ),
-                      ChoiceChip(
-                        label: Text('preferences.theme_dark'.tr()),
-                        selected: state.themeMode == ThemeMode.dark,
-                        onSelected: (_) => context
-                            .read<ThemeCubit>()
-                            .setThemeMode(ThemeMode.dark),
-                      ),
-                      ChoiceChip(
-                        label: Text('preferences.theme_system'.tr()),
-                        selected: state.themeMode == ThemeMode.system,
-                        onSelected: (_) => context
-                            .read<ThemeCubit>()
-                            .setThemeMode(ThemeMode.system),
-                      ),
-                    ],
-                  );
-                },
+                builder: (context, state) => ChoiceGroup<ThemeMode>(
+                  options: {
+                    for (final mode in _themeModes)
+                      mode: 'preferences.theme_${mode.name}'.tr(),
+                  },
+                  selected: state.themeMode,
+                  onSelected: context.read<ThemeCubit>().setThemeMode,
+                ),
               ),
               verticalSpace(24),
-              Text(
-                'app_lock.section_title'.tr(),
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
+              _label(context, 'app_lock.section_title'),
               verticalSpace(4),
               BlocBuilder<AppLockCubit, AppLockState>(
-                builder: (context, state) {
-                  return SwitchListTile(
-                    contentPadding: EdgeInsets.zero,
-                    secondary: Icon(
-                      Icons.fingerprint_rounded,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    title: Text('app_lock.toggle_title'.tr()),
-                    subtitle: Text(
-                      state.supported
-                          ? 'app_lock.toggle_subtitle'.tr()
-                          : 'app_lock.not_supported'.tr(),
-                    ),
-                    value: state.enabled,
-                    onChanged: (!state.supported || state.authenticating)
-                        ? null
-                        : (value) => _toggleAppLock(context, value),
-                  );
-                },
+                builder: (context, state) => SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  secondary: Icon(
+                    Icons.fingerprint_rounded,
+                    color: theme.colorScheme.primary,
+                  ),
+                  title: Text('app_lock.toggle_title'.tr()),
+                  subtitle: Text(
+                    (state.supported
+                            ? 'app_lock.toggle_subtitle'
+                            : 'app_lock.not_supported')
+                        .tr(),
+                  ),
+                  value: state.enabled,
+                  onChanged: (!state.supported || state.authenticating)
+                      ? null
+                      : (value) => _toggleAppLock(context, value),
+                ),
               ),
+              verticalSpace(24),
+              _label(context, 'reminders.section_title'),
+              verticalSpace(4),
+              const RemindersTile(),
               verticalSpace(32),
               OutlinedButton.icon(
+                style: danger,
                 onPressed: () => _confirmSignOut(context),
-                icon: Icon(
-                  Icons.logout_rounded,
-                  color: Theme.of(context).colorScheme.error,
-                ),
-                label: Text(
-                  'settings.sign_out'.tr(),
-                  style: TextStyle(color: Theme.of(context).colorScheme.error),
-                ),
+                icon: const Icon(Icons.logout_rounded),
+                label: Text('settings.sign_out'.tr()),
               ),
               verticalSpace(12),
               TextButton.icon(
+                style: danger,
                 onPressed: () => _confirmDeleteAccount(context),
-                icon: Icon(
-                  Icons.delete_forever_rounded,
-                  color: Theme.of(context).colorScheme.error,
-                ),
-                label: Text(
-                  'settings.delete_account'.tr(),
-                  style: TextStyle(color: Theme.of(context).colorScheme.error),
-                ),
+                icon: const Icon(Icons.delete_forever_rounded),
+                label: Text('settings.delete_account'.tr()),
               ),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-/// Asks for the password (Firebase needs a fresh sign-in to delete an
-/// account) and returns it, or null when cancelled.
-class _DeleteAccountDialog extends StatefulWidget {
-  const _DeleteAccountDialog();
-
-  @override
-  State<_DeleteAccountDialog> createState() => _DeleteAccountDialogState();
-}
-
-class _DeleteAccountDialogState extends State<_DeleteAccountDialog> {
-  final _controller = TextEditingController();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final error = Theme.of(context).colorScheme.error;
-    return AlertDialog(
-      title: Text('settings.delete_account_title'.tr()),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('settings.delete_account_body'.tr()),
-          verticalSpace(16),
-          TextField(
-            controller: _controller,
-            obscureText: true,
-            autofocus: true,
-            onChanged: (_) => setState(() {}),
-            decoration: InputDecoration(
-              labelText: 'settings.delete_account_password'.tr(),
-            ),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text('common.cancel'.tr()),
-        ),
-        TextButton(
-          onPressed: _controller.text.isEmpty
-              ? null
-              : () => Navigator.of(context).pop(_controller.text),
-          child: Text(
-            'settings.delete_account_confirm'.tr(),
-            style: TextStyle(color: _controller.text.isEmpty ? null : error),
-          ),
-        ),
-      ],
     );
   }
 }

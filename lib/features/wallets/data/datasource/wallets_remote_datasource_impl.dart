@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:wallet_split/core/error_handling/app_exceptions.dart';
-import 'package:wallet_split/features/wallets/data/datasource/wallets_remote_datasource.dart';
-import 'package:wallet_split/features/wallets/data/models/allocation_model.dart';
-import 'package:wallet_split/features/wallets/data/models/money_transaction_model.dart';
-import 'package:wallet_split/features/wallets/data/models/wallet_model.dart';
-import 'package:wallet_split/features/wallets/domain/entities/money_transaction.dart';
+import 'package:flowsy/core/error_handling/app_exceptions.dart';
+import 'package:flowsy/features/wallets/data/datasource/wallets_remote_datasource.dart';
+import 'package:flowsy/features/wallets/data/models/allocation_model.dart';
+import 'package:flowsy/features/wallets/data/models/money_transaction_model.dart';
+import 'package:flowsy/features/wallets/data/models/wallet_model.dart';
+import 'package:flowsy/features/wallets/domain/entities/money_transaction.dart';
 
 /// Firestore layout (all scoped under the signed-in user):
 ///   users/{uid}/wallets/{walletId}

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallet_split/core/bloc/base_bloc.dart';
-import 'package:wallet_split/features/wallets/presentation/cubit/wallet_detail_state.dart';
-import 'package:wallet_split/features/wallets/repository/wallets_repository.dart';
+import 'package:flowsy/core/bloc/base_bloc.dart';
+import 'package:flowsy/features/wallets/presentation/cubit/wallet_detail_state.dart';
+import 'package:flowsy/features/wallets/repository/wallets_repository.dart';
 
 class WalletDetailCubit extends Cubit<WalletDetailState> {
   final WalletsRepository _repository;

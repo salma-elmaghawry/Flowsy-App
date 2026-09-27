@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:wallet_split/core/error_handling/failures.dart';
-import 'package:wallet_split/features/auth/domain/entities/app_user.dart';
+import 'package:flowsy/core/error_handling/failures.dart';
+import 'package:flowsy/features/auth/domain/entities/app_user.dart';
 
 abstract class AuthRepository {
   Stream<AppUser?> get authStateChanges;

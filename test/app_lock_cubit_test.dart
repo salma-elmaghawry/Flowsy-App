@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wallet_split/features/app_lock/data/app_lock_service.dart';
-import 'package:wallet_split/features/app_lock/presentation/cubit/app_lock_cubit.dart';
+import 'package:flowsy/features/app_lock/data/app_lock_service.dart';
+import 'package:flowsy/features/app_lock/presentation/cubit/app_lock_cubit.dart';
 
 class _FakeService implements AppLockService {
   bool enabled;

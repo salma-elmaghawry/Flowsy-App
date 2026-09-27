@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wallet_split/features/wallets/domain/entities/allocation.dart';
-import 'package:wallet_split/features/wallets/domain/entities/wallet.dart';
-import 'package:wallet_split/features/wallets/presentation/cubit/wallet_detail_state.dart';
+import 'package:flowsy/features/wallets/domain/entities/allocation.dart';
+import 'package:flowsy/features/wallets/domain/entities/wallet.dart';
+import 'package:flowsy/features/wallets/presentation/cubit/wallet_detail_state.dart';
 
 Wallet _wallet(double balance) => Wallet(
   id: 'w',

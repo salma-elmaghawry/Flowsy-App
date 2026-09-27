@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wallet_split/core/helpers/amount_parser.dart';
+import 'package:flowsy/core/helpers/amount_parser.dart';
 
 void main() {
   test('parses western digits', () => expect(parseAmount('100'), 100));

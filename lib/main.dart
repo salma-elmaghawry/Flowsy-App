@@ -3,18 +3,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:wallet_split/app.dart';
-import 'package:wallet_split/core/injection/injection_container.dart';
-import 'package:wallet_split/core/theme/controller/theme_cubit.dart';
-import 'package:wallet_split/features/app_lock/presentation/cubit/app_lock_cubit.dart';
-import 'package:wallet_split/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:wallet_split/firebase_options.dart';
+import 'package:flowsy/app.dart';
+import 'package:flowsy/core/injection/injection_container.dart';
+import 'package:flowsy/core/services/daily_reminder_service.dart';
+import 'package:flowsy/core/theme/controller/theme_cubit.dart';
+import 'package:flowsy/features/app_lock/presentation/cubit/app_lock_cubit.dart';
+import 'package:flowsy/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:flowsy/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await setupInjection();
+  await getIt<DailyReminderService>().init();
 
   final savedLocaleCode = getIt<SharedPreferences>().getString('app_locale');
   final startLocale = (savedLocaleCode != null)

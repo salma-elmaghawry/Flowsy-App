@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallet_split/features/app_lock/data/app_lock_service.dart';
-import 'package:wallet_split/features/app_lock/presentation/cubit/app_lock_state.dart';
+import 'package:flowsy/features/app_lock/data/app_lock_service.dart';
+import 'package:flowsy/features/app_lock/presentation/cubit/app_lock_state.dart';
 
 class AppLockCubit extends Cubit<AppLockState> {
   final AppLockService _service;

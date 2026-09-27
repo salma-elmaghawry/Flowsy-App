@@ -15,7 +15,7 @@
 ///
 /// Usage:
 /// ```dart
-/// import 'package:wallet_split/core/animations/animations.dart';
+/// import 'package:flowsy/core/animations/animations.dart';
 ///
 /// // Use extension methods
 /// MyWidget().fadeInSlideUp(delay: 100.ms);

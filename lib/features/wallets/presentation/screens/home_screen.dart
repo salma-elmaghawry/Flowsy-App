@@ -2,17 +2,20 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wallet_split/core/animations/animations.dart';
-import 'package:wallet_split/core/helpers/currency_formatter.dart';
-import 'package:wallet_split/core/helpers/extensions.dart';
-import 'package:wallet_split/core/helpers/spacing.dart';
-import 'package:wallet_split/core/routes/routes.dart';
-import 'package:wallet_split/features/wallets/domain/entities/wallet.dart';
-import 'package:wallet_split/features/wallets/presentation/cubit/wallets_cubit.dart';
-import 'package:wallet_split/features/wallets/presentation/cubit/wallets_state.dart';
-import 'package:wallet_split/features/wallets/presentation/widgets/add_wallet_sheet.dart';
-import 'package:wallet_split/features/wallets/presentation/widgets/transaction_tile.dart';
-import 'package:wallet_split/features/wallets/presentation/widgets/wallet_card.dart';
+import 'package:flowsy/core/animations/animations.dart';
+import 'package:flowsy/core/helpers/currency_formatter.dart';
+import 'package:flowsy/core/helpers/extensions.dart';
+import 'package:flowsy/core/helpers/responsive.dart';
+import 'package:flowsy/core/helpers/spacing.dart';
+import 'package:flowsy/core/injection/injection_container.dart';
+import 'package:flowsy/core/routes/routes.dart';
+import 'package:flowsy/core/services/daily_reminder_service.dart';
+import 'package:flowsy/features/wallets/domain/entities/wallet.dart';
+import 'package:flowsy/features/wallets/presentation/cubit/wallets_cubit.dart';
+import 'package:flowsy/features/wallets/presentation/cubit/wallets_state.dart';
+import 'package:flowsy/features/wallets/presentation/widgets/add_wallet_sheet.dart';
+import 'package:flowsy/features/wallets/presentation/widgets/transaction_tile.dart';
+import 'package:flowsy/features/wallets/presentation/widgets/wallet_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,10 +25,29 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late final AppLifecycleListener _lifecycle;
+  final DailyReminderService _reminders = getIt<DailyReminderService>();
+
   @override
   void initState() {
     super.initState();
     context.read<WalletsCubit>().watchAll();
+    // Opening the app counts as checking in today: push reminders to tomorrow.
+    _lifecycle = AppLifecycleListener(onResume: _reminders.refresh);
+    _setUpReminders();
+  }
+
+  Future<void> _setUpReminders() async {
+    if (!_reminders.permissionAsked) {
+      await _reminders.requestPermission();
+    }
+    await _reminders.refresh();
+  }
+
+  @override
+  void dispose() {
+    _lifecycle.dispose();
+    super.dispose();
   }
 
   void _openWallet(Wallet wallet) {
@@ -47,83 +69,128 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: BlocBuilder<WalletsCubit, WalletsState>(
         builder: (context, state) {
+          final isWide = Responsive.isWide(context);
+          final wallets = _walletsSection(context, state);
+          final activity = _activitySection(context, state);
+
           return RefreshIndicator(
             onRefresh: () async => context.read<WalletsCubit>().watchAll(),
             child: ListView(
-              padding: EdgeInsets.all(20.w),
+              padding: Responsive.scrollPadding(
+                context,
+                maxWidth: isWide
+                    ? Responsive.wideMaxWidth
+                    : Responsive.contentMaxWidth,
+              ),
               children: [
                 _TotalBalanceCard(totalBalance: state.totalBalance),
                 verticalSpace(28),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'home.wallets_section'.tr(),
-                      style: Theme.of(context).textTheme.displaySmall,
-                    ),
-                    IconButton(
-                      onPressed: () => showAddWalletSheet(context),
-                      icon: Icon(
-                        Icons.add_circle_rounded,
-                        color: Theme.of(context).colorScheme.primary,
-                        size: 26.sp,
+                if (isWide)
+                  // Tablet landscape / large screens: two columns.
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: wallets,
+                        ),
                       ),
-                      tooltip: 'wallets.add_wallet_title'.tr(),
-                    ),
-                  ],
-                ),
-                verticalSpace(8),
-                if (state.wallets.isEmpty && !state.isLoading)
-                  _EmptyHint(text: 'wallets.empty'.tr())
-                else
-                  ...AnimationBuilder.staggerColumn(
-                    children: state.wallets
-                        .map(
-                          (wallet) => Padding(
-                            padding: EdgeInsets.only(bottom: 12.h),
-                            child: WalletCard(
-                              wallet: wallet,
-                              onTap: () => _openWallet(wallet),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                verticalSpace(20),
-                Text(
-                  'home.recent_activity_section'.tr(),
-                  style: Theme.of(context).textTheme.displaySmall,
-                ),
-                verticalSpace(8),
-                if (state.recentTransactions.isEmpty)
-                  _EmptyHint(text: 'transactions.empty'.tr())
-                else
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 14.w),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.surface,
-                      borderRadius: BorderRadius.circular(16.r),
-                      border: Border.all(
-                        color: Theme.of(
-                          context,
-                        ).dividerColor.withValues(alpha: 0.15),
+                      SizedBox(width: 24.w),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: activity,
+                        ),
                       ),
-                    ),
-                    child: Column(
-                      children: state.recentTransactions
-                          .map(
-                            (transaction) =>
-                                TransactionTile(transaction: transaction),
-                          )
-                          .toList(),
-                    ),
-                  ).fadeInSlideUp(),
+                    ],
+                  )
+                else ...[
+                  ...wallets,
+                  verticalSpace(20),
+                  ...activity,
+                ],
               ],
             ),
           );
         },
       ),
     );
+  }
+
+  List<Widget> _walletsSection(BuildContext context, WalletsState state) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'home.wallets_section'.tr(),
+            style: Theme.of(context).textTheme.displaySmall,
+          ),
+          IconButton(
+            onPressed: () => showAddWalletSheet(context),
+            icon: Icon(
+              Icons.add_circle_rounded,
+              color: Theme.of(context).colorScheme.primary,
+              size: 26.sp,
+            ),
+            tooltip: 'wallets.add_wallet_title'.tr(),
+          ),
+        ],
+      ),
+      verticalSpace(8),
+      if (state.wallets.isEmpty && !state.isLoading)
+        _EmptyHint(text: 'wallets.empty'.tr())
+      else
+        ...AnimationBuilder.staggerColumn(
+          children: state.wallets
+              .map(
+                (wallet) => Padding(
+                  padding: EdgeInsets.only(bottom: 12.h),
+                  child: WalletCard(
+                    wallet: wallet,
+                    onTap: () => _openWallet(wallet),
+                  ),
+                ),
+              )
+              .toList(),
+        ),
+    ];
+  }
+
+  List<Widget> _activitySection(BuildContext context, WalletsState state) {
+    return [
+      // Same height as the wallets header row so both columns line up.
+      SizedBox(
+        height: 48,
+        child: Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: Text(
+            'home.recent_activity_section'.tr(),
+            style: Theme.of(context).textTheme.displaySmall,
+          ),
+        ),
+      ),
+      verticalSpace(8),
+      if (state.recentTransactions.isEmpty)
+        _EmptyHint(text: 'transactions.empty'.tr())
+      else
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 14.w),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(16.r),
+            border: Border.all(
+              color: Theme.of(context).dividerColor.withValues(alpha: 0.15),
+            ),
+          ),
+          child: Column(
+            children: state.recentTransactions
+                .map((transaction) => TransactionTile(transaction: transaction))
+                .toList(),
+          ),
+        ).fadeInSlideUp(),
+    ];
   }
 }
 

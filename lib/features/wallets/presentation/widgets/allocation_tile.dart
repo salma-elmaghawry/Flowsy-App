@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wallet_split/core/animations/animations.dart';
-import 'package:wallet_split/core/helpers/currency_formatter.dart';
-import 'package:wallet_split/core/helpers/spacing.dart';
-import 'package:wallet_split/features/wallets/domain/entities/allocation.dart';
+import 'package:flowsy/core/animations/animations.dart';
+import 'package:flowsy/core/helpers/currency_formatter.dart';
+import 'package:flowsy/core/helpers/spacing.dart';
+import 'package:flowsy/features/wallets/domain/entities/allocation.dart';
 
 class AllocationTile extends StatelessWidget {
   final Allocation allocation;

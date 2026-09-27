@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:wallet_split/core/error_handling/error_mapper.dart';
-import 'package:wallet_split/core/error_handling/failures.dart';
-import 'package:wallet_split/features/wallets/data/datasource/wallets_remote_datasource.dart';
-import 'package:wallet_split/features/wallets/domain/entities/allocation.dart';
-import 'package:wallet_split/features/wallets/domain/entities/money_transaction.dart';
-import 'package:wallet_split/features/wallets/domain/entities/wallet.dart';
-import 'package:wallet_split/features/wallets/repository/wallets_repository.dart';
+import 'package:flowsy/core/error_handling/error_mapper.dart';
+import 'package:flowsy/core/error_handling/failures.dart';
+import 'package:flowsy/features/wallets/data/datasource/wallets_remote_datasource.dart';
+import 'package:flowsy/features/wallets/domain/entities/allocation.dart';
+import 'package:flowsy/features/wallets/domain/entities/money_transaction.dart';
+import 'package:flowsy/features/wallets/domain/entities/wallet.dart';
+import 'package:flowsy/features/wallets/repository/wallets_repository.dart';
 
 class WalletsRepositoryImpl implements WalletsRepository {
   final WalletsRemoteDataSource _remoteDataSource;

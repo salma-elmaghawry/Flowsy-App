@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wallet_split/core/animations/animations.dart';
-import 'package:wallet_split/core/theme/app_colors.dart';
+import 'package:flowsy/core/animations/animations.dart';
+import 'package:flowsy/core/theme/app_colors.dart';
 
 /// Preset colors offered for wallets, before the custom color button.
 const walletPresetColors = <Color>[

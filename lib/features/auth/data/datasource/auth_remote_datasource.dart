@@ -1,4 +1,4 @@
-import 'package:wallet_split/features/auth/data/models/app_user_model.dart';
+import 'package:flowsy/features/auth/data/models/app_user_model.dart';
 
 abstract class AuthRemoteDataSource {
   Stream<AppUserModel?> get authStateChanges;

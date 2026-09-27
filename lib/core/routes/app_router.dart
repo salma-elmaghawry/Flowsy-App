@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wallet_split/core/injection/injection_container.dart';
-import 'package:wallet_split/core/routes/routes.dart';
-import 'package:wallet_split/features/auth/presentation/screens/login_screen.dart';
-import 'package:wallet_split/features/auth/presentation/screens/signup_screen.dart';
-import 'package:wallet_split/features/intro/splash_screen.dart';
-import 'package:wallet_split/features/settings/presentation/screens/settings_screen.dart';
-import 'package:wallet_split/features/wallets/domain/entities/wallet.dart';
-import 'package:wallet_split/features/wallets/presentation/cubit/wallet_detail_cubit.dart';
-import 'package:wallet_split/features/wallets/presentation/cubit/wallets_cubit.dart';
-import 'package:wallet_split/features/wallets/presentation/screens/home_screen.dart';
-import 'package:wallet_split/features/wallets/presentation/screens/wallet_detail_screen.dart';
+import 'package:flowsy/core/injection/injection_container.dart';
+import 'package:flowsy/core/routes/routes.dart';
+import 'package:flowsy/features/auth/presentation/screens/login_screen.dart';
+import 'package:flowsy/features/auth/presentation/screens/signup_screen.dart';
+import 'package:flowsy/features/intro/splash_screen.dart';
+import 'package:flowsy/features/settings/presentation/screens/settings_screen.dart';
+import 'package:flowsy/features/wallets/domain/entities/wallet.dart';
+import 'package:flowsy/features/wallets/presentation/cubit/wallet_detail_cubit.dart';
+import 'package:flowsy/features/wallets/presentation/cubit/wallets_cubit.dart';
+import 'package:flowsy/features/wallets/presentation/screens/home_screen.dart';
+import 'package:flowsy/features/wallets/presentation/screens/wallet_detail_screen.dart';
 
 class AppRouter {
   Route<dynamic> generateRoute(RouteSettings settings) {

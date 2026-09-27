@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wallet_split/core/error_handling/failures.dart';
-import 'package:wallet_split/features/wallets/domain/entities/allocation.dart';
-import 'package:wallet_split/features/wallets/domain/entities/money_transaction.dart';
-import 'package:wallet_split/features/wallets/domain/entities/wallet.dart';
-import 'package:wallet_split/features/wallets/presentation/cubit/wallet_detail_cubit.dart';
-import 'package:wallet_split/features/wallets/presentation/widgets/add_transaction_sheet.dart';
-import 'package:wallet_split/features/wallets/repository/wallets_repository.dart';
+import 'package:flowsy/core/error_handling/failures.dart';
+import 'package:flowsy/features/wallets/domain/entities/allocation.dart';
+import 'package:flowsy/features/wallets/domain/entities/money_transaction.dart';
+import 'package:flowsy/features/wallets/domain/entities/wallet.dart';
+import 'package:flowsy/features/wallets/presentation/cubit/wallet_detail_cubit.dart';
+import 'package:flowsy/features/wallets/presentation/widgets/add_transaction_sheet.dart';
+import 'package:flowsy/features/wallets/repository/wallets_repository.dart';
 
 /// Repository fake whose live streams the test pushes into by hand, so it can
 /// reproduce several success states arriving for a single save.

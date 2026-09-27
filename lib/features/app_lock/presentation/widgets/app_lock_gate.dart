@@ -2,9 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:wallet_split/core/helpers/spacing.dart';
-import 'package:wallet_split/features/app_lock/presentation/cubit/app_lock_cubit.dart';
-import 'package:wallet_split/features/app_lock/presentation/cubit/app_lock_state.dart';
+import 'package:flowsy/core/helpers/responsive.dart';
+import 'package:flowsy/core/helpers/spacing.dart';
+import 'package:flowsy/features/app_lock/presentation/cubit/app_lock_cubit.dart';
+import 'package:flowsy/features/app_lock/presentation/cubit/app_lock_state.dart';
 
 /// Sits above every screen. When the app lock is on, it covers the app with a
 /// lock screen on launch and after the app was in the background for a while,
@@ -79,7 +80,10 @@ class _LockScreen extends StatelessWidget {
       color: theme.scaffoldBackgroundColor,
       child: SafeArea(
         child: Center(
-          child: Padding(
+          child: Container(
+            constraints: const BoxConstraints(
+              maxWidth: Responsive.formMaxWidth,
+            ),
             padding: EdgeInsets.symmetric(horizontal: 32.w),
             child: Column(
               mainAxisSize: MainAxisSize.min,
