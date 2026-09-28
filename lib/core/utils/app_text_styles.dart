@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTextStyles {
-  // Headings
   static TextStyle get font32Bold =>
       GoogleFonts.cairo(fontSize: 32.sp, fontWeight: FontWeight.bold);
 
@@ -16,7 +15,6 @@ class AppTextStyles {
   static TextStyle get font20Bold =>
       GoogleFonts.cairo(fontSize: 20.sp, fontWeight: FontWeight.bold);
 
-  // Body
   static TextStyle get font18Normal =>
       GoogleFonts.cairo(fontSize: 18.sp, fontWeight: FontWeight.normal);
   static TextStyle get font16Normal =>
@@ -25,7 +23,6 @@ class AppTextStyles {
   static TextStyle get font14Normal =>
       GoogleFonts.cairo(fontSize: 14.sp, fontWeight: FontWeight.normal);
 
-  // Labels & Captions
   static TextStyle get font14SemiBold =>
       GoogleFonts.cairo(fontSize: 14.sp, fontWeight: FontWeight.w500);
   static TextStyle get font12SemiBold =>

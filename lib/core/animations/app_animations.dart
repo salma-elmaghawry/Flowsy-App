@@ -1,108 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-/// Global animation configuration for the app.
-/// These values create a consistent, professional feel across all animations.
 class AppAnimations {
   AppAnimations._();
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // DURATION PRESETS
-  // ══════════════════════════════════════════════════════════════════════════
-
-  /// Ultra-fast micro-interactions (button press, ripple)
   static const Duration ultraFast = Duration(milliseconds: 100);
 
-  /// Fast animations (small state changes, icon swaps)
   static const Duration fast = Duration(milliseconds: 200);
 
-  /// Normal animations (standard transitions)
   static const Duration normal = Duration(milliseconds: 300);
 
-  /// Medium animations (card reveals, moderate movements)
   static const Duration medium = Duration(milliseconds: 400);
 
-  /// Slow animations (page transitions, complex reveals)
   static const Duration slow = Duration(milliseconds: 500);
 
-  /// Very slow animations (onboarding, emphasis effects)
   static const Duration verySlow = Duration(milliseconds: 700);
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // CURVE PRESETS
-  // ══════════════════════════════════════════════════════════════════════════
-
-  /// Default curve for most animations (smooth ease out)
   static const Curve defaultCurve = Curves.easeOutCubic;
 
-  /// Bounce curve for playful interactions
   static const Curve bounceCurve = Curves.elasticOut;
 
-  /// Snappy curve for quick interactions
   static const Curve snappyCurve = Curves.easeOutBack;
 
-  /// Smooth decelerate for slide-ins
   static const Curve slideInCurve = Curves.decelerate;
 
-  /// Emphasized curve for attention-grabbing
   static const Curve emphasisCurve = Curves.easeInOutCubic;
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // STAGGER DELAYS
-  // ══════════════════════════════════════════════════════════════════════════
-
-  /// Delay between staggered list items
   static const Duration staggerDelay = Duration(milliseconds: 50);
 
-  /// Longer delay for card grids
   static const Duration gridStaggerDelay = Duration(milliseconds: 80);
 
-  /// Delay for section reveals
   static const Duration sectionDelay = Duration(milliseconds: 100);
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // OFFSET PRESETS
-  // ══════════════════════════════════════════════════════════════════════════
-
-  /// Subtle slide offset
   static const Offset slideUpSmall = Offset(0, 20);
 
-  /// Normal slide offset
   static const Offset slideUpNormal = Offset(0, 30);
 
-  /// Large slide offset
   static const Offset slideUpLarge = Offset(0, 50);
 
-  /// Slide from left
   static const Offset slideFromLeft = Offset(-30, 0);
 
-  /// Slide from right
   static const Offset slideFromRight = Offset(30, 0);
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // SCALE PRESETS
-  // ══════════════════════════════════════════════════════════════════════════
-
-  /// Subtle press scale
   static const double pressScale = 0.95;
 
-  /// Tap bounce scale
   static const double tapBounceScale = 0.9;
 
-  /// Initial reveal scale
   static const double revealScale = 0.8;
 
-  /// Attention scale
   static const double attentionScale = 1.05;
 }
 
-/// Extension methods for adding professional animations to any widget.
 extension AppAnimateExtensions on Widget {
-  // ══════════════════════════════════════════════════════════════════════════
-  // ENTRANCE ANIMATIONS
-  // ══════════════════════════════════════════════════════════════════════════
-
-  /// Fade in with slide up - perfect for list items and cards
   Widget fadeInSlideUp({
     Duration? duration,
     Duration? delay,
@@ -122,7 +71,6 @@ extension AppAnimateExtensions on Widget {
         );
   }
 
-  /// Fade in with scale - great for cards and images
   Widget fadeInScale({
     Duration? duration,
     Duration? delay,
@@ -145,7 +93,6 @@ extension AppAnimateExtensions on Widget {
         );
   }
 
-  /// Slide in from left
   Widget slideInFromLeft({Duration? duration, Duration? delay, Curve? curve}) {
     return animate(delay: delay)
         .fadeIn(
@@ -160,7 +107,6 @@ extension AppAnimateExtensions on Widget {
         );
   }
 
-  /// Slide in from right
   Widget slideInFromRight({Duration? duration, Duration? delay, Curve? curve}) {
     return animate(delay: delay)
         .fadeIn(
@@ -175,7 +121,6 @@ extension AppAnimateExtensions on Widget {
         );
   }
 
-  /// Pop in with bounce - attention-grabbing
   Widget popIn({Duration? duration, Duration? delay, Curve? curve}) {
     return animate(delay: delay)
         .fadeIn(duration: duration ?? AppAnimations.fast)
@@ -187,11 +132,6 @@ extension AppAnimateExtensions on Widget {
         );
   }
 
-  // ══════════════════════════════════════════════════════════════════════════
-  // INTERACTION ANIMATIONS
-  // ══════════════════════════════════════════════════════════════════════════
-
-  /// Shimmer effect for loading states or highlights
   Widget shimmer({Duration? duration, Color? color}) {
     return animate(onPlay: (controller) => controller.repeat()).shimmer(
       duration: duration ?? const Duration(milliseconds: 1500),
@@ -199,7 +139,6 @@ extension AppAnimateExtensions on Widget {
     );
   }
 
-  /// Pulse animation for attention
   Widget pulse({Duration? duration}) {
     return animate(
       onPlay: (controller) => controller.repeat(reverse: true),
@@ -211,7 +150,6 @@ extension AppAnimateExtensions on Widget {
     );
   }
 
-  /// Shake animation for errors
   Widget shake({Duration? duration, double? offset}) {
     return animate().shake(
       duration: duration ?? AppAnimations.medium,
@@ -221,9 +159,7 @@ extension AppAnimateExtensions on Widget {
   }
 }
 
-/// Extension for creating staggered list animations
 extension StaggeredListAnimation on List<Widget> {
-  /// Animate list items with stagger effect
   List<Widget> animateList({
     Duration? itemDuration,
     Duration? staggerDelay,
@@ -260,9 +196,7 @@ extension StaggeredListAnimation on List<Widget> {
   }
 }
 
-/// Utility class for building complex animations
 class AnimationBuilder {
-  /// Creates a staggered entrance effect for a column of widgets
   static List<Widget> staggerColumn({
     required List<Widget> children,
     Duration? duration,
@@ -278,7 +212,6 @@ class AnimationBuilder {
     }).toList();
   }
 
-  /// Creates a grid stagger effect
   static Widget staggerGrid({
     required List<Widget> children,
     required int crossAxisCount,

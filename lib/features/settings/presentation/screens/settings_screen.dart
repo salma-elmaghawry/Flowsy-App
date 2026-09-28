@@ -131,7 +131,6 @@ class SettingsScreen extends StatelessWidget {
               _label(context, 'preferences.language'),
               verticalSpace(8),
               ChoiceGroup<String>(
-                expanded: true,
                 options: _languages,
                 selected: context.locale.languageCode,
                 onSelected: (code) => _changeLocale(context, code),

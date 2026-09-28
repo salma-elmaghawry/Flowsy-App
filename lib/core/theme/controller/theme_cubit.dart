@@ -21,13 +21,11 @@ class ThemeCubit extends Cubit<ThemeState> {
     return ThemeMode.system;
   }
 
-  //set theme mode
   Future<void> setThemeMode(ThemeMode mode) async {
     emit(state.copyWith(themeMode: mode));
     await sharedPreferences.setString(themeModeKey, mode.toString());
   }
 
-  // get theme mode
   ThemeMode getThemeMode() {
     final modeString = sharedPreferences.getString(themeModeKey);
     if (modeString != null) {
@@ -39,7 +37,6 @@ class ThemeCubit extends Cubit<ThemeState> {
     return ThemeMode.system;
   }
 
-  // toggle theme mode
   Future<void> toggleThemeMode() async {
     final newMode = state.themeMode == ThemeMode.light
         ? ThemeMode.dark

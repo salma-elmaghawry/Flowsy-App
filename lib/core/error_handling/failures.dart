@@ -9,8 +9,6 @@ abstract class Failure extends Equatable {
   List<Object> get props => [message];
 }
 
-// Auth Failures
-
 class InvalidCredentialsFailure extends Failure {
   const InvalidCredentialsFailure({required super.message});
 }
@@ -39,8 +37,6 @@ class UserNotFoundFailure extends Failure {
   const UserNotFoundFailure({required super.message});
 }
 
-// Firestore failures
-
 class PermissionDeniedFailure extends Failure {
   const PermissionDeniedFailure({required super.message});
 }
@@ -48,8 +44,6 @@ class PermissionDeniedFailure extends Failure {
 class NotFoundFailure extends Failure {
   const NotFoundFailure({required super.message});
 }
-
-// Wallets/allocations domain failures
 
 class InsufficientFundsFailure extends Failure {
   const InsufficientFundsFailure({required super.message});
@@ -59,19 +53,13 @@ class NotAuthenticatedFailure extends Failure {
   const NotAuthenticatedFailure({required super.message});
 }
 
-// Network failures
-
 class NetworkFailure extends Failure {
   const NetworkFailure({required super.message});
 }
 
-// Server failures
-
 class ServerFailure extends Failure {
   const ServerFailure({required super.message});
 }
-
-// Unexpected failures
 
 class UnexpectedFailure extends Failure {
   const UnexpectedFailure({required super.message});

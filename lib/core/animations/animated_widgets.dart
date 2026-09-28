@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'app_animations.dart';
 
-/// Animated tap wrapper that provides professional press feedback
 class AnimatedTap extends StatefulWidget {
   final Widget child;
   final VoidCallback? onTap;
@@ -83,7 +82,6 @@ class _AnimatedTapState extends State<AnimatedTap>
   }
 }
 
-/// Animated button with built-in loading state
 class AnimatedButton extends StatelessWidget {
   final Widget child;
   final VoidCallback? onPressed;
@@ -139,7 +137,6 @@ class AnimatedButton extends StatelessWidget {
   }
 }
 
-/// Animated counter for displaying changing numbers
 class AnimatedCounter extends StatelessWidget {
   final int value;
   final TextStyle? style;
@@ -167,7 +164,6 @@ class AnimatedCounter extends StatelessWidget {
   }
 }
 
-/// Expandable widget with smooth animation
 class AnimatedExpand extends StatelessWidget {
   final Widget child;
   final bool isExpanded;
@@ -199,7 +195,6 @@ class AnimatedExpand extends StatelessWidget {
   }
 }
 
-/// Animated visibility with slide transition
 class AnimatedSlideVisibility extends StatelessWidget {
   final Widget child;
   final bool isVisible;
@@ -236,7 +231,6 @@ class AnimatedSlideVisibility extends StatelessWidget {
   }
 }
 
-/// Loading skeleton with shimmer effect
 class AnimatedSkeleton extends StatelessWidget {
   final double width;
   final double height;
@@ -271,7 +265,6 @@ class AnimatedSkeleton extends StatelessWidget {
   }
 }
 
-/// Animated icon that rotates on state change
 class AnimatedRotatingIcon extends StatelessWidget {
   final IconData icon;
   final bool isRotated;
@@ -301,7 +294,6 @@ class AnimatedRotatingIcon extends StatelessWidget {
   }
 }
 
-/// Page route with custom slide animation
 class AnimatedPageRoute<T> extends PageRouteBuilder<T> {
   final Widget page;
   final SlideDirection direction;

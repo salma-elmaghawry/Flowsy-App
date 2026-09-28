@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flowsy/core/injection/injection_container.dart';
 import 'package:flowsy/core/services/daily_reminder_service.dart';
 
-/// Turns the 5 PM / 9 PM "log today's spending" reminders on or off.
 class RemindersTile extends StatefulWidget {
   const RemindersTile({super.key});
 

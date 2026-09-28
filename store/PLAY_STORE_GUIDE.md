@@ -52,6 +52,8 @@ flutter build appbundle --release
 
 ## 5. Store listing
 
+> **Use the newer listing in `store/listing/`.** It has the final English and Arabic title, short and full descriptions, all within Play's limits. The new feature graphics are `store/graphics/feature-graphic.png` and `feature-graphic-ar.png`. Framed screenshots are made by `python3 store/tools/make_store_graphics.py` from raw captures in `store/screenshots/raw/en` and `raw/ar`. The text below is the older first draft.
+
 **App name** (max 30)
 ```
 Flowsy - Wallet Split

@@ -24,30 +24,25 @@ import 'package:flowsy/features/wallets/repository/wallets_repository_impl.dart'
 final GetIt getIt = GetIt.instance;
 
 Future<void> setupInjection() async {
-  // Core
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
   getIt.registerLazySingleton(() => AppRouter());
   getIt.registerFactory<ThemeCubit>(() => ThemeCubit(getIt()));
 
-  // App lock (fingerprint / face / phone PIN)
   getIt.registerLazySingleton<AppLockService>(
     () => AppLockService(LocalAuthentication(), getIt()),
   );
   getIt.registerFactory<AppLockCubit>(() => AppLockCubit(getIt()));
 
-  // Daily spending reminders (5 PM and 9 PM on days the app wasn't opened)
   getIt.registerLazySingleton<DailyReminderService>(
     () => DailyReminderService(FlutterLocalNotificationsPlugin(), getIt()),
   );
 
-  // Firebase services
   getIt.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
   getIt.registerLazySingleton<FirebaseFirestore>(
     () => FirebaseFirestore.instance,
   );
 
-  // Auth feature
   getIt.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(getIt(), getIt()),
   );
@@ -56,7 +51,6 @@ Future<void> setupInjection() async {
   );
   getIt.registerFactory<AuthCubit>(() => AuthCubit(getIt()));
 
-  // Wallets feature
   getIt.registerLazySingleton<WalletsRemoteDataSource>(
     () => WalletsRemoteDataSourceImpl(getIt(), getIt()),
   );

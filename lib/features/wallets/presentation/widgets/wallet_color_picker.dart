@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flowsy/core/animations/animations.dart';
 import 'package:flowsy/core/theme/app_colors.dart';
 
-/// Preset colors offered for wallets, before the custom color button.
 const walletPresetColors = <Color>[
   AppColors.primary,
   AppColors.secondary,

@@ -9,7 +9,6 @@ import 'package:flowsy/core/utils/app_text_styles.dart';
 import 'package:flowsy/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flowsy/features/auth/presentation/cubit/auth_state.dart';
 
-/// Asks for the account email and sends a Firebase password reset link.
 Future<void> showForgotPasswordSheet(
   BuildContext context, {
   String initialEmail = '',

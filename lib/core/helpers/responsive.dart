@@ -63,7 +63,6 @@ class Responsive {
   }
 }
 
-/// Centres [child] and limits its width to [maxWidth].
 class ResponsiveCenter extends StatelessWidget {
   final Widget child;
   final double maxWidth;

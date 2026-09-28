@@ -1,0 +1,13 @@
+file '/Users/salmaelmaghawry/development/Projects/Flowsy-App/store/video/build/bg0.png'
+duration 7.100
+file '/Users/salmaelmaghawry/development/Projects/Flowsy-App/store/video/build/bg1.png'
+duration 3.600
+file '/Users/salmaelmaghawry/development/Projects/Flowsy-App/store/video/build/bg2.png'
+duration 8.500
+file '/Users/salmaelmaghawry/development/Projects/Flowsy-App/store/video/build/bg3.png'
+duration 4.600
+file '/Users/salmaelmaghawry/development/Projects/Flowsy-App/store/video/build/bg4.png'
+duration 8.800
+file '/Users/salmaelmaghawry/development/Projects/Flowsy-App/store/video/build/bg5.png'
+duration 6.860
+file '/Users/salmaelmaghawry/development/Projects/Flowsy-App/store/video/build/bg5.png'

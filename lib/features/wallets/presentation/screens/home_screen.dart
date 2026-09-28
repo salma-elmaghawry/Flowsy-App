@@ -86,7 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 _TotalBalanceCard(totalBalance: state.totalBalance),
                 verticalSpace(28),
                 if (isWide)
-                  // Tablet landscape / large screens: two columns.
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
