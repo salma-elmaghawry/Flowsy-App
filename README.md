@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="store/graphics/portfolio-card-modern.png" alt="Flowsy: every pound, in its place" width="100%">
+  <img src="store/graphics/feature card-modern.png" alt="Flowsy: every pound, in its place" width="100%">
 </p>
 
 <p align="center">
