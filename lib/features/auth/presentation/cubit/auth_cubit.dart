@@ -64,11 +64,17 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future<void> sendPasswordResetEmail(String email) async {
+  Future<void> sendPasswordResetEmail(
+    String email, {
+    String? languageCode,
+  }) async {
     emit(
       state.copyWith(status: Status.loading, action: AuthAction.resetPassword),
     );
-    final result = await _repository.sendPasswordResetEmail(email);
+    final result = await _repository.sendPasswordResetEmail(
+      email,
+      languageCode: languageCode,
+    );
     result.fold(
       (failure) => emit(
         state.copyWith(

@@ -11,7 +11,10 @@ class _FakeAuthRepo implements AuthRepository {
   Failure? failWith;
 
   @override
-  Future<Either<Failure, void>> sendPasswordResetEmail(String email) async {
+  Future<Either<Failure, void>> sendPasswordResetEmail(
+    String email, {
+    String? languageCode,
+  }) async {
     if (failWith != null) return Left(failWith!);
     sentTo = email;
     return const Right(null);

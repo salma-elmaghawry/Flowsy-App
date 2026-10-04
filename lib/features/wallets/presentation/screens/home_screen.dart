@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     context.read<WalletsCubit>().watchAll();
-    // Opening the app counts as checking in today: push reminders to tomorrow.
+    // Re-queue reminders on resume so their text follows the app language.
     _lifecycle = AppLifecycleListener(onResume: _reminders.refresh);
     _setUpReminders();
   }
@@ -60,6 +60,11 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('app_name'.tr()),
         actions: [
+          IconButton(
+            onPressed: () => context.pushNamed(Routes.notes),
+            icon: const Icon(Icons.sticky_note_2_outlined),
+            tooltip: 'notes.title'.tr(),
+          ),
           IconButton(
             onPressed: () => context.pushNamed(Routes.settings),
             icon: const Icon(Icons.settings_outlined),

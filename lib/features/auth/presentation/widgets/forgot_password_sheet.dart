@@ -51,6 +51,7 @@ class _ForgotPasswordSheetState extends State<_ForgotPasswordSheet> {
     setState(() => _error = null);
     context.read<AuthCubit>().sendPasswordResetEmail(
       _emailController.text.trim(),
+      languageCode: context.locale.languageCode,
     );
   }
 

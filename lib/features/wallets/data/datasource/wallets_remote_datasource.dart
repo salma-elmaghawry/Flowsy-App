@@ -47,4 +47,17 @@ abstract class WalletsRemoteDataSource {
     String? allocationId,
     String? note,
   });
+
+  /// Edits an existing transaction and re-balances the wallet (and any
+  /// allocation it was paid from) by the difference.
+  Future<void> updateTransaction({
+    required String transactionId,
+    required double amount,
+    required DateTime createdAt,
+    String? allocationId,
+    String? note,
+  });
+
+  /// Deletes a transaction and reverts its effect on the wallet balance.
+  Future<void> deleteTransaction(String transactionId);
 }

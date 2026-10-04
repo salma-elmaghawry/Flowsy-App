@@ -56,4 +56,14 @@ abstract class WalletsRepository {
     String? allocationId,
     String? note,
   });
+
+  Future<Either<Failure, void>> updateTransaction({
+    required String transactionId,
+    required double amount,
+    required DateTime createdAt,
+    String? allocationId,
+    String? note,
+  });
+
+  Future<Either<Failure, void>> deleteTransaction(String transactionId);
 }

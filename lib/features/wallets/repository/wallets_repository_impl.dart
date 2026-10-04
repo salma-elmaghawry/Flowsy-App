@@ -213,4 +213,36 @@ class WalletsRepositoryImpl implements WalletsRepository {
       return Left(ErrorMapper.map(e));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> updateTransaction({
+    required String transactionId,
+    required double amount,
+    required DateTime createdAt,
+    String? allocationId,
+    String? note,
+  }) async {
+    try {
+      await _remoteDataSource.updateTransaction(
+        transactionId: transactionId,
+        amount: amount,
+        createdAt: createdAt,
+        allocationId: allocationId,
+        note: note,
+      );
+      return const Right(null);
+    } catch (e) {
+      return Left(ErrorMapper.map(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteTransaction(String transactionId) async {
+    try {
+      await _remoteDataSource.deleteTransaction(transactionId);
+      return const Right(null);
+    } catch (e) {
+      return Left(ErrorMapper.map(e));
+    }
+  }
 }

@@ -7,12 +7,14 @@ import 'package:timezone/data/latest_all.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flowsy/core/services/reminder_times.dart';
 
-/// Reminds the user at 5 PM and 9 PM to log today's spending, but only on
+/// Reminds the user at the times they picked (5 PM and 9 PM by default) to
+/// log today's spending, but only on
 /// days they have not opened the app. Every app open reschedules the queue
 /// starting tomorrow, which silences whatever was left for today.
 class DailyReminderService {
   static const String enabledKey = 'daily_reminders_enabled';
   static const String permissionAskedKey = 'daily_reminders_permission_asked';
+  static const String timesKey = 'daily_reminders_times';
   static const String _channelId = 'daily_reminders';
   static const String _channelName = 'Daily reminders';
 
@@ -28,6 +30,27 @@ class DailyReminderService {
   bool get isEnabled => _prefs.getBool(enabledKey) ?? true;
 
   Future<void> setEnabled(bool value) => _prefs.setBool(enabledKey, value);
+
+  /// The user's reminder times, sorted. Falls back to the defaults when
+  /// nothing valid is saved.
+  List<ReminderTime> get times {
+    final saved = _prefs.getStringList(timesKey);
+    if (saved == null) return defaultReminderTimes;
+    final parsed = normalizeReminderTimes(
+      saved.map(ReminderTime.tryDecode).whereType<ReminderTime>(),
+    );
+    return parsed.isEmpty ? defaultReminderTimes : parsed;
+  }
+
+  /// Saves [value] and re-queues the reminders with the new times.
+  Future<void> setTimes(List<ReminderTime> value) async {
+    final normalized = normalizeReminderTimes(value);
+    await _prefs.setStringList(
+      timesKey,
+      normalized.map((t) => t.encode()).toList(),
+    );
+    await refresh();
+  }
 
   bool get permissionAsked => _prefs.getBool(permissionAskedKey) ?? false;
 
@@ -85,19 +108,21 @@ class DailyReminderService {
     return false;
   }
 
-  /// Reschedules using the current app language. Call on every app open.
-  Future<void> refresh() => rescheduleFromTomorrow(
-    title: 'reminders.notification_title'.tr(),
-    body: 'reminders.notification_body'.tr(),
+  /// Re-queues all reminders in the current app language. Call on app open
+  /// and after the language or the times change.
+  Future<void> refresh() => reschedule(
+    (i) => (
+      title: 'reminders.messages.$i.title'.tr(),
+      body: 'reminders.messages.$i.body'.tr(),
+    ),
   );
 
-  /// Clears pending reminders and queues new ones starting tomorrow.
-  /// [title] and [body] are passed in already translated, so the text
-  /// follows the app language at the time of the last open.
-  Future<void> rescheduleFromTomorrow({
-    required String title,
-    required String body,
-  }) async {
+  /// Clears pending reminders and queues one weekly repeating reminder per
+  /// weekday and picked time. [message] gives the already translated text
+  /// for a message index.
+  Future<void> reschedule(
+    ({String title, String body}) Function(int index) message,
+  ) async {
     if (!_ready) return;
     try {
       await _plugin.cancelAll();
@@ -113,23 +138,25 @@ class DailyReminderService {
         iOS: DarwinNotificationDetails(),
       );
 
-      final times = upcomingReminderTimes(_now());
-      for (var i = 0; i < times.length; i++) {
-        final t = times[i];
+      for (final r in weeklyReminderSchedule(_now(), times: times)) {
+        final t = r.firstFire;
+        final text = message(r.messageIndex);
         await _plugin.zonedSchedule(
-          id: i,
+          id: r.id,
           scheduledDate: tz.TZDateTime(
             tz.local,
             t.year,
             t.month,
             t.day,
             t.hour,
+            t.minute,
           ),
           notificationDetails: details,
           // Inexact avoids the exact-alarm permission Google Play restricts.
           androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-          title: title,
-          body: body,
+          matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
+          title: text.title,
+          body: text.body,
         );
       }
     } catch (e) {

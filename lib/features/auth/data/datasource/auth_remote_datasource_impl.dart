@@ -50,8 +50,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<void> signOut() => _firebaseAuth.signOut();
 
   @override
-  Future<void> sendPasswordResetEmail(String email) =>
-      _firebaseAuth.sendPasswordResetEmail(email: email);
+  Future<void> sendPasswordResetEmail(
+    String email, {
+    String? languageCode,
+  }) async {
+    // Picks the matching localized template from the Firebase console
+    // (Authentication > Templates > Template language).
+    if (languageCode != null) await _firebaseAuth.setLanguageCode(languageCode);
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
 
   @override
   Future<void> deleteAccount({required String password}) async {
@@ -69,7 +76,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   /// Deletes users/{uid} and all of its sub-collections
-  /// (wallets, wallets/*/allocations, transactions).
+  /// (wallets, wallets/*/allocations, transactions, notes).
   Future<void> _deleteUserData(String uid) async {
     final userDoc = _firestore.collection('users').doc(uid);
     final refs = <DocumentReference<Map<String, dynamic>>>[];
@@ -84,6 +91,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
     final transactions = await userDoc.collection('transactions').get();
     refs.addAll(transactions.docs.map((d) => d.reference));
+    final notes = await userDoc.collection('notes').get();
+    refs.addAll(notes.docs.map((d) => d.reference));
     refs.add(userDoc);
 
     // Firestore batches are capped at 500 writes.

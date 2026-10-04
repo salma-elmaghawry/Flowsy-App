@@ -11,6 +11,8 @@ enum WalletDetailAction {
   updateAllocation,
   deleteAllocation,
   deleteWallet,
+  updateTransaction,
+  deleteTransaction,
 }
 
 class WalletDetailState extends BaseState {

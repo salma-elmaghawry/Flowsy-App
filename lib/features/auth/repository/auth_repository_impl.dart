@@ -50,9 +50,15 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, void>> sendPasswordResetEmail(String email) async {
+  Future<Either<Failure, void>> sendPasswordResetEmail(
+    String email, {
+    String? languageCode,
+  }) async {
     try {
-      await _remoteDataSource.sendPasswordResetEmail(email);
+      await _remoteDataSource.sendPasswordResetEmail(
+        email,
+        languageCode: languageCode,
+      );
       return const Right(null);
     } catch (e) {
       return Left(ErrorMapper.map(e));

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16B866"/><stop offset="1" stop-color="#087A43"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F9D25C"/><stop offset="1" stop-color="#E0A514"/>
+    </linearGradient>
+    <filter id="sh" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#043D22" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="520" fill="url(#bg)"/>
+  <circle cx="1080" cy="40" r="210" fill="#FFFFFF" fill-opacity="0.07"/>
+  <circle cx="90" cy="500" r="240" fill="#FFFFFF" fill-opacity="0.06"/>
+  <circle cx="600" cy="270" r="215" fill="#FFFFFF" fill-opacity="0.08"/>
+  <circle cx="600" cy="270" r="165" fill="#FFFFFF" fill-opacity="0.08"/>
+
+  <!-- floating coins -->
+  <g filter="url(#sh)">
+    <circle cx="300" cy="150" r="34" fill="url(#gold)"/><circle cx="300" cy="150" r="22" fill="none" stroke="#FFF6D6" stroke-width="5" stroke-opacity="0.8"/>
+    <circle cx="925" cy="135" r="24" fill="url(#gold)"/><circle cx="925" cy="135" r="14" fill="none" stroke="#FFF6D6" stroke-width="4" stroke-opacity="0.8"/>
+    <circle cx="950" cy="385" r="38" fill="url(#gold)"/><circle cx="950" cy="385" r="25" fill="none" stroke="#FFF6D6" stroke-width="5" stroke-opacity="0.8"/>
+    <circle cx="240" cy="380" r="18" fill="url(#gold)"/>
+  </g>
+
+  <!-- sparkles -->
+  <g fill="#FFFFFF">
+    <path d="M410 90 l7 21 21 7 -21 7 -7 21 -7 -21 -21 -7 21 -7z" fill-opacity="0.9"/>
+    <path d="M820 450 l5 15 15 5 -15 5 -5 15 -5 -15 -15 -5 15 -5z" fill-opacity="0.8"/>
+    <path d="M1040 240 l6 18 18 6 -18 6 -6 18 -6 -18 -18 -6 18 -6z" fill-opacity="0.7"/>
+    <path d="M150 230 l5 15 15 5 -15 5 -5 15 -5 -15 -15 -5 15 -5z" fill-opacity="0.7"/>
+    <circle cx="480" cy="460" r="6" fill-opacity="0.6"/><circle cx="760" cy="70" r="7" fill-opacity="0.6"/>
+  </g>
+
+  <!-- wallet (from the Flowsy logo) -->
+  <g filter="url(#sh)" transform="translate(324 33) scale(0.5)">
+    <rect x="262" y="236" width="440" height="150" rx="56" fill="#FFFFFF" fill-opacity="0.55" transform="rotate(-8 482 311)"/>
+    <rect x="212" y="312" width="600" height="440" rx="92" fill="#FFFFFF"/>
+    <rect x="540" y="444" width="272" height="176" rx="72" fill="#0B8A4C"/>
+    <g transform="translate(28 0)"><path d="M648.0,532.0 L706.0,532.0 A58,58 0 1 1 648.0,474.0 Z" fill="#F4BE2E"/>
+    <path d="M656.5,523.5 L656.5,465.5 A58,58 0 0 1 714.5,523.5 Z" fill="#FFFFFF"/></g>
+  </g>
+
+  <!-- padlock badge -->
+  <g filter="url(#sh)" transform="translate(735 300)">
+    <path d="M22 50 V30 a38 38 0 0 1 76 0 V50" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round"/>
+    <rect x="0" y="44" width="120" height="100" rx="26" fill="url(#gold)"/>
+    <circle cx="60" cy="86" r="14" fill="#0B6E3E"/>
+    <rect x="54" y="90" width="12" height="30" rx="6" fill="#0B6E3E"/>
+  </g>
+</svg>

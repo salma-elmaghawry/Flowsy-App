@@ -255,6 +255,68 @@ class WalletDetailCubit extends Cubit<WalletDetailState> {
     );
   }
 
+  Future<void> updateTransaction({
+    required String transactionId,
+    required double amount,
+    required DateTime createdAt,
+    String? allocationId,
+    String? note,
+  }) async {
+    emit(
+      state.copyWith(
+        status: Status.loading,
+        action: WalletDetailAction.updateTransaction,
+      ),
+    );
+    final result = await _repository.updateTransaction(
+      transactionId: transactionId,
+      amount: amount,
+      createdAt: createdAt,
+      allocationId: allocationId,
+      note: note,
+    );
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          status: Status.failure,
+          message: failure.message,
+          action: WalletDetailAction.updateTransaction,
+        ),
+      ),
+      (_) => emit(
+        state.copyWith(
+          status: Status.success,
+          action: WalletDetailAction.updateTransaction,
+        ),
+      ),
+    );
+  }
+
+  Future<void> deleteTransaction(String transactionId) async {
+    emit(
+      state.copyWith(
+        status: Status.loading,
+        action: WalletDetailAction.deleteTransaction,
+      ),
+    );
+    final result = await _repository.deleteTransaction(transactionId);
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          status: Status.failure,
+          message: failure.message,
+          action: WalletDetailAction.deleteTransaction,
+        ),
+      ),
+      (_) => emit(
+        state.copyWith(
+          status: Status.success,
+          action: WalletDetailAction.deleteTransaction,
+        ),
+      ),
+    );
+  }
+
   @override
   Future<void> close() {
     _walletSub?.cancel();

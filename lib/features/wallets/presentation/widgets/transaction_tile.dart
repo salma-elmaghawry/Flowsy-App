@@ -9,11 +9,13 @@ import 'package:flowsy/features/wallets/domain/entities/money_transaction.dart';
 class TransactionTile extends StatelessWidget {
   final MoneyTransaction transaction;
   final bool showWalletName;
+  final VoidCallback? onTap;
 
   const TransactionTile({
     super.key,
     required this.transaction,
     this.showWalletName = true,
+    this.onTap,
   });
 
   @override
@@ -29,68 +31,71 @@ class TransactionTile extends StatelessWidget {
         transaction.note!,
     ];
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      child: Row(
-        children: [
-          Container(
-            width: 36.w,
-            height: 36.w,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.12),
-              shape: BoxShape.circle,
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.h),
+        child: Row(
+          children: [
+            Container(
+              width: 36.w,
+              height: 36.w,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                isTopUp
+                    ? Icons.arrow_downward_rounded
+                    : Icons.arrow_upward_rounded,
+                color: color,
+                size: 18.sp,
+              ),
             ),
-            child: Icon(
-              isTopUp
-                  ? Icons.arrow_downward_rounded
-                  : Icons.arrow_upward_rounded,
-              color: color,
-              size: 18.sp,
+            horizontalSpace(12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    isTopUp
+                        ? 'transactions.type_top_up'.tr()
+                        : 'transactions.type_spend'.tr(),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  if (subtitleParts.isNotEmpty) ...[
+                    verticalSpace(2),
+                    Text(
+                      subtitleParts.join(' · '),
+                      style: Theme.of(context).textTheme.bodySmall,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ],
+              ),
             ),
-          ),
-          horizontalSpace(12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  isTopUp
-                      ? 'transactions.type_top_up'.tr()
-                      : 'transactions.type_spend'.tr(),
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
-                ),
-                if (subtitleParts.isNotEmpty) ...[
-                  verticalSpace(2),
-                  Text(
-                    subtitleParts.join(' · '),
-                    style: Theme.of(context).textTheme.bodySmall,
-                    overflow: TextOverflow.ellipsis,
+                  '$sign${formatCurrency(transaction.amount)}',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: color,
                   ),
-                ],
+                ),
+                Text(
+                  DateFormat.MMMd(
+                    context.locale.toString(),
+                  ).add_Hm().format(transaction.createdAt),
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
               ],
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                '$sign${formatCurrency(transaction.amount)}',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: color,
-                ),
-              ),
-              Text(
-                DateFormat.MMMd(
-                  context.locale.toString(),
-                ).add_Hm().format(transaction.createdAt),
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

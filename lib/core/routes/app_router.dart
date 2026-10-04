@@ -5,6 +5,8 @@ import 'package:flowsy/core/routes/routes.dart';
 import 'package:flowsy/features/auth/presentation/screens/login_screen.dart';
 import 'package:flowsy/features/auth/presentation/screens/signup_screen.dart';
 import 'package:flowsy/features/intro/splash_screen.dart';
+import 'package:flowsy/features/notes/presentation/cubit/notes_cubit.dart';
+import 'package:flowsy/features/notes/presentation/screens/notes_screen.dart';
 import 'package:flowsy/features/settings/presentation/screens/settings_screen.dart';
 import 'package:flowsy/features/wallets/domain/entities/wallet.dart';
 import 'package:flowsy/features/wallets/presentation/cubit/wallet_detail_cubit.dart';
@@ -43,6 +45,14 @@ class AppRouter {
 
       case Routes.settings:
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
+
+      case Routes.notes:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => getIt<NotesCubit>(),
+            child: const NotesScreen(),
+          ),
+        );
 
       default:
         return MaterialPageRoute(

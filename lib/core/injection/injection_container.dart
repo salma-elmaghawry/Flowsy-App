@@ -14,6 +14,11 @@ import 'package:flowsy/features/auth/data/datasource/auth_remote_datasource_impl
 import 'package:flowsy/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flowsy/features/auth/repository/auth_repository.dart';
 import 'package:flowsy/features/auth/repository/auth_repository_impl.dart';
+import 'package:flowsy/features/notes/data/datasource/notes_remote_datasource.dart';
+import 'package:flowsy/features/notes/data/datasource/notes_remote_datasource_impl.dart';
+import 'package:flowsy/features/notes/presentation/cubit/notes_cubit.dart';
+import 'package:flowsy/features/notes/repository/notes_repository.dart';
+import 'package:flowsy/features/notes/repository/notes_repository_impl.dart';
 import 'package:flowsy/features/wallets/data/datasource/wallets_remote_datasource.dart';
 import 'package:flowsy/features/wallets/data/datasource/wallets_remote_datasource_impl.dart';
 import 'package:flowsy/features/wallets/presentation/cubit/wallet_detail_cubit.dart';
@@ -61,4 +66,12 @@ Future<void> setupInjection() async {
   getIt.registerFactoryParam<WalletDetailCubit, String, void>(
     (walletId, _) => WalletDetailCubit(getIt<WalletsRepository>(), walletId),
   );
+
+  getIt.registerLazySingleton<NotesRemoteDataSource>(
+    () => NotesRemoteDataSourceImpl(getIt(), getIt()),
+  );
+  getIt.registerLazySingleton<NotesRepository>(
+    () => NotesRepositoryImpl(getIt()),
+  );
+  getIt.registerFactory<NotesCubit>(() => NotesCubit(getIt()));
 }

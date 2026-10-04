@@ -13,6 +13,7 @@ import 'package:flowsy/features/wallets/presentation/cubit/wallet_detail_state.d
 Future<void> showAddTransactionSheet(
   BuildContext context, {
   required TransactionType type,
+  MoneyTransaction? existing,
 }) {
   final cubit = context.read<WalletDetailCubit>();
   return showModalBottomSheet(
@@ -23,15 +24,16 @@ Future<void> showAddTransactionSheet(
     ),
     builder: (_) => BlocProvider.value(
       value: cubit,
-      child: _AddTransactionSheetContent(type: type),
+      child: _AddTransactionSheetContent(type: type, existing: existing),
     ),
   );
 }
 
 class _AddTransactionSheetContent extends StatefulWidget {
   final TransactionType type;
+  final MoneyTransaction? existing;
 
-  const _AddTransactionSheetContent({required this.type});
+  const _AddTransactionSheetContent({required this.type, this.existing});
 
   @override
   State<_AddTransactionSheetContent> createState() =>
@@ -43,13 +45,80 @@ class _AddTransactionSheetContentState
   final _formKey = GlobalKey<FormState>();
   bool _closed = false;
   String? _error;
-  final _amountController = TextEditingController();
-  final _noteController = TextEditingController();
-  String? _selectedAllocationId;
+  late final _amountController = TextEditingController(
+    text: widget.existing != null ? _formatAmount(widget.existing!.amount) : '',
+  );
+  late final _noteController = TextEditingController(
+    text: widget.existing?.note,
+  );
+  late String? _selectedAllocationId = widget.existing?.allocationId;
+  late DateTime _date = widget.existing?.createdAt ?? DateTime.now();
 
   bool get _isTopUp => widget.type == TransactionType.topUp;
-  WalletDetailAction get _action =>
-      _isTopUp ? WalletDetailAction.topUp : WalletDetailAction.spend;
+  bool get _isEditing => widget.existing != null;
+  WalletDetailAction get _action => _isEditing
+      ? WalletDetailAction.updateTransaction
+      : _isTopUp
+      ? WalletDetailAction.topUp
+      : WalletDetailAction.spend;
+
+  static String _formatAmount(double amount) => amount == amount.truncate()
+      ? amount.truncate().toString()
+      : amount.toString();
+
+  Future<void> _pickDateTime() async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+    if (pickedDate == null || !mounted) return;
+    final pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(_date),
+    );
+    if (!mounted) return;
+    final time = pickedTime ?? TimeOfDay.fromDateTime(_date);
+    setState(() {
+      _date = DateTime(
+        pickedDate.year,
+        pickedDate.month,
+        pickedDate.day,
+        time.hour,
+        time.minute,
+      );
+    });
+  }
+
+  Future<void> _confirmDelete() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text('transactions.delete_confirm_title'.tr()),
+        content: Text('transactions.delete_confirm_message'.tr()),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text('common.cancel'.tr()),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(
+              'common.delete'.tr(),
+              style: TextStyle(
+                color: Theme.of(dialogContext).colorScheme.error,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true && mounted) {
+      setState(() => _error = null);
+      context.read<WalletDetailCubit>().deleteTransaction(widget.existing!.id);
+    }
+  }
 
   @override
   void dispose() {
@@ -66,7 +135,15 @@ class _AddTransactionSheetContentState
         ? null
         : _noteController.text.trim();
     final cubit = context.read<WalletDetailCubit>();
-    if (_isTopUp) {
+    if (_isEditing) {
+      cubit.updateTransaction(
+        transactionId: widget.existing!.id,
+        amount: amount,
+        createdAt: _date,
+        allocationId: _isTopUp ? null : _selectedAllocationId,
+        note: note,
+      );
+    } else if (_isTopUp) {
       cubit.topUp(amount: amount, note: note);
     } else {
       cubit.spend(
@@ -81,7 +158,9 @@ class _AddTransactionSheetContentState
   Widget build(BuildContext context) {
     return BlocListener<WalletDetailCubit, WalletDetailState>(
       listener: (context, state) {
-        if (state.action != _action) return;
+        final isDelete =
+            _isEditing && state.action == WalletDetailAction.deleteTransaction;
+        if (state.action != _action && !isDelete) return;
         if (state.isSuccess) {
           // Several success states can arrive for one save (the save result
           // plus live stream updates). Close the sheet only once, otherwise
@@ -109,7 +188,9 @@ class _AddTransactionSheetContentState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                _isTopUp
+                _isEditing
+                    ? 'transactions.edit_title'.tr()
+                    : _isTopUp
                     ? 'transactions.top_up_title'.tr()
                     : 'transactions.spend_title'.tr(),
                 style: Theme.of(context).textTheme.displaySmall,
@@ -140,8 +221,13 @@ class _AddTransactionSheetContentState
                     if (state.allocations.isEmpty) {
                       return const SizedBox.shrink();
                     }
+                    // A deleted allocation can't be re-selected, so fall
+                    // back to "something else" instead of crashing the menu.
+                    final hasSelected = state.allocations.any(
+                      (a) => a.id == _selectedAllocationId,
+                    );
                     return DropdownButtonFormField<String?>(
-                      initialValue: _selectedAllocationId,
+                      initialValue: hasSelected ? _selectedAllocationId : null,
                       decoration: InputDecoration(
                         labelText: 'transactions.allocation_label'.tr(),
                       ),
@@ -172,6 +258,24 @@ class _AddTransactionSheetContentState
                   hintText: 'allocations.note_hint'.tr(),
                 ),
               ),
+              if (_isEditing) ...[
+                verticalSpace(16),
+                InkWell(
+                  onTap: _pickDateTime,
+                  borderRadius: BorderRadius.circular(12.r),
+                  child: InputDecorator(
+                    decoration: InputDecoration(
+                      labelText: 'transactions.date_label'.tr(),
+                      suffixIcon: const Icon(Icons.calendar_today_rounded),
+                    ),
+                    child: Text(
+                      DateFormat.yMMMd(
+                        context.locale.toString(),
+                      ).add_jm().format(_date),
+                    ),
+                  ),
+                ),
+              ],
               if (_error != null) ...[
                 verticalSpace(16),
                 Text(
@@ -198,6 +302,24 @@ class _AddTransactionSheetContentState
                   );
                 },
               ),
+              if (_isEditing) ...[
+                verticalSpace(8),
+                Center(
+                  child: TextButton.icon(
+                    onPressed: _confirmDelete,
+                    icon: Icon(
+                      Icons.delete_outline_rounded,
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                    label: Text(
+                      'transactions.delete'.tr(),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
         ),

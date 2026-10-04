@@ -5,4 +5,5 @@ class Routes {
   static const String home = '/home';
   static const String walletDetail = '/wallet-detail';
   static const String settings = '/settings';
+  static const String notes = '/notes';
 }

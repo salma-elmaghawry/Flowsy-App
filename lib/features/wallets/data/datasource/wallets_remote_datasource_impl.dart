@@ -270,4 +270,128 @@ class WalletsRemoteDataSourceImpl implements WalletsRemoteDataSource {
       txn.set(txnRef, model.toMap());
     });
   }
+
+  @override
+  Future<void> updateTransaction({
+    required String transactionId,
+    required double amount,
+    required DateTime createdAt,
+    String? allocationId,
+    String? note,
+  }) async {
+    final uid = _requireUid();
+    final txnRef = _transactionsCol(uid).doc(transactionId);
+
+    await _firestore.runTransaction((txn) async {
+      final txnSnap = await txn.get(txnRef);
+      final txnData = txnSnap.data();
+      if (txnData == null) throw StateError('Transaction not found');
+      final old = MoneyTransactionModel.fromMap(txnSnap.id, txnData);
+      final walletRef = _walletDoc(uid, old.walletId);
+      final isTopUp = old.type == TransactionType.topUp;
+
+      final walletSnap = await txn.get(walletRef);
+      final walletData = walletSnap.data() ?? const <String, dynamic>{};
+      final currentBalance = (walletData['balance'] as num?)?.toDouble() ?? 0;
+
+      // Top-ups add to the balance, spends subtract from it.
+      final balanceDelta = isTopUp ? amount - old.amount : old.amount - amount;
+      if (currentBalance + balanceDelta < 0) {
+        throw const InsufficientFundsException();
+      }
+
+      // Only spends are linked to an allocation. Give the old amount back to
+      // the old allocation, then take the new amount from the new one.
+      final newAllocationId = isTopUp ? null : allocationId;
+      final allocationDeltas = <String, double>{};
+      if (!isTopUp && old.allocationId != null) {
+        allocationDeltas[old.allocationId!] = old.amount;
+      }
+      if (newAllocationId != null) {
+        allocationDeltas[newAllocationId] =
+            (allocationDeltas[newAllocationId] ?? 0) - amount;
+      }
+
+      // Firestore transactions need every read before any write.
+      final allocationSnaps =
+          <String, DocumentSnapshot<Map<String, dynamic>>>{};
+      for (final id in allocationDeltas.keys) {
+        allocationSnaps[id] = await txn.get(
+          _allocationsCol(uid, old.walletId).doc(id),
+        );
+      }
+
+      String? newAllocationLabel;
+      for (final entry in allocationDeltas.entries) {
+        final snap = allocationSnaps[entry.key]!;
+        final data = snap.data();
+        if (entry.key == newAllocationId) {
+          if (data == null) throw StateError('Allocation not found');
+          newAllocationLabel = data['label'] as String?;
+        }
+        // The old allocation may have been deleted since. Nothing to refund.
+        if (data == null) continue;
+        final currentAmount = (data['amount'] as num?)?.toDouble() ?? 0;
+        if (currentAmount + entry.value < 0) {
+          throw const InsufficientFundsException();
+        }
+        if (entry.value != 0) {
+          txn.update(snap.reference, {
+            'amount': FieldValue.increment(entry.value),
+          });
+        }
+      }
+
+      if (balanceDelta != 0) {
+        txn.update(walletRef, {'balance': FieldValue.increment(balanceDelta)});
+      }
+
+      txn.update(txnRef, {
+        'amount': amount,
+        'note': note,
+        'createdAt': Timestamp.fromDate(createdAt),
+        'allocationId': newAllocationId,
+        'allocationLabel': newAllocationLabel,
+      });
+    });
+  }
+
+  @override
+  Future<void> deleteTransaction(String transactionId) async {
+    final uid = _requireUid();
+    final txnRef = _transactionsCol(uid).doc(transactionId);
+
+    await _firestore.runTransaction((txn) async {
+      final txnSnap = await txn.get(txnRef);
+      final txnData = txnSnap.data();
+      if (txnData == null) return;
+      final old = MoneyTransactionModel.fromMap(txnSnap.id, txnData);
+      final walletRef = _walletDoc(uid, old.walletId);
+      final isTopUp = old.type == TransactionType.topUp;
+
+      final walletSnap = await txn.get(walletRef);
+      final allocationRef = !isTopUp && old.allocationId != null
+          ? _allocationsCol(uid, old.walletId).doc(old.allocationId)
+          : null;
+      final allocationSnap = allocationRef != null
+          ? await txn.get(allocationRef)
+          : null;
+
+      final balanceDelta = isTopUp ? -old.amount : old.amount;
+      if (walletSnap.exists) {
+        final currentBalance =
+            (walletSnap.data()?['balance'] as num?)?.toDouble() ?? 0;
+        if (currentBalance + balanceDelta < 0) {
+          throw const InsufficientFundsException();
+        }
+        txn.update(walletRef, {'balance': FieldValue.increment(balanceDelta)});
+      }
+      if (allocationSnap != null && allocationSnap.exists) {
+        txn.update(allocationRef!, {
+          'amount': FieldValue.increment(old.amount),
+        });
+      }
+      txn.delete(txnRef);
+    });
+  }
 }

@@ -297,6 +297,11 @@ class _WalletDetailScreenState extends State<WalletDetailScreen> {
                           (transaction) => TransactionTile(
                             transaction: transaction,
                             showWalletName: false,
+                            onTap: () => showAddTransactionSheet(
+                              context,
+                              type: transaction.type,
+                              existing: transaction,
+                            ),
                           ),
                         )
                         .toList(),

@@ -122,7 +122,12 @@
         "allocation_label": "Paid for (optional)",
         "no_allocation": "Something else",
         "history_section": "What happened",
-        "empty": "Nothing yet."
+        "empty": "Nothing yet.",
+        "edit_title": "Edit transaction",
+        "date_label": "When?",
+        "delete": "Delete transaction",
+        "delete_confirm_title": "Delete this transaction?",
+        "delete_confirm_message": "Your balance will go back to how it was before it."
     },
     "settings": {
         "title": "Settings",
@@ -150,8 +155,79 @@
     "reminders": {
         "section_title": "Reminders",
         "toggle_title": "Daily spending reminder",
-        "toggle_subtitle": "At 5 PM and 9 PM if you haven't opened Flowsy today",
-        "notification_title": "Spent anything today?",
-        "notification_body": "Take a second to add today's spending in Flowsy."
+        "toggle_subtitle": "Every day at the times you pick, with a new tip each time",
+        "pick_time": "Reminder time",
+        "edit_time": "Change time",
+        "remove_time": "Remove time",
+        "add_time": "Add time",
+        "messages": {
+            "0": {
+                "title": "Where did your money go?",
+                "body": "Track today's money before you regret it tomorrow and can't tell where it went."
+            },
+            "1": {
+                "title": "Just one minute",
+                "body": "Log today's spending in a minute and save yourself the headache at the end of the month."
+            },
+            "2": {
+                "title": "Every pound counts",
+                "body": "Small expenses are what empty your salary. Log them before you forget."
+            },
+            "3": {
+                "title": "Future you says thanks",
+                "body": "People who log today don't get surprised at the end of the month."
+            },
+            "4": {
+                "title": "You're the boss here",
+                "body": "Your money won't manage itself. Open Flowsy and add what you spent."
+            },
+            "5": {
+                "title": "Coffee? Ride? Food?",
+                "body": "Everything you spent today deserves a line in Flowsy."
+            },
+            "6": {
+                "title": "Don't leave it for tomorrow",
+                "body": "By tomorrow you'll forget half of it. Log it now."
+            },
+            "7": {
+                "title": "A small step every day",
+                "body": "A quick daily log means full control over your money."
+            },
+            "8": {
+                "title": "Your wallets miss you",
+                "body": "Check your balance and add today's spending so the numbers stay right."
+            },
+            "9": {
+                "title": "Know where it goes",
+                "body": "Log every day and you'll see exactly what's eating your money."
+            },
+            "10": {
+                "title": "Your goals need a plan",
+                "body": "Every pound you track today gets you closer to what you want."
+            },
+            "11": {
+                "title": "No spending without tracking",
+                "body": "Add what you spent today, even if it was small."
+            },
+            "12": {
+                "title": "Be the smart one",
+                "body": "People who are good with money track it every day. Start now."
+            },
+            "13": {
+                "title": "Stay in charge",
+                "body": "When you know what you spent, you decide what you spend next. Log it."
+            }
+        }
+    },
+    "notes": {
+        "title": "Notes",
+        "add": "New note",
+        "new_title": "New note",
+        "edit_title": "Edit note",
+        "title_hint": "Title",
+        "content_hint": "Write what's on your mind...",
+        "empty": "No notes yet. Tap + to write down anything on your mind.",
+        "delete_confirm_title": "Delete this note?",
+        "delete_confirm_message": "This note will be deleted permanently."
     }
 }
